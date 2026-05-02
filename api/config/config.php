@@ -4,16 +4,10 @@
 define('APP_NAME', 'Document Engine');
 define('APP_ENV', 'development'); // 'development' or 'production'
 
-// Base URL Configuration - DYNAMIC DETECTION
+// Base URL Configuration - FIXED FOR TESTING
+// Replace 192.168.18.51 with your computer's IP if it changes
 if (APP_ENV === 'development') {
-    $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
-
-    // Use the IP address if accessed remotely, otherwise localhost
-    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-
-    // If it's localhost but we know we're on a local network, we can force it,
-    // but HTTP_HOST should be correct if the phone used the IP to connect.
-    define('BASE_URL', $protocol . "://" . $host . "/quotation-system");
+    define('BASE_URL', 'http://192.168.18.51/quotation-system');
 } else {
     define('BASE_URL', 'https://your-production-domain.com');
 }

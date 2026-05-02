@@ -105,6 +105,16 @@ const DocumentForm = {
                                 <label class="block text-sm font-medium text-slate-300 mb-1">Terms & Conditions</label>
                                 <textarea id="doc-terms" rows="3" class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-shadow"></textarea>
                             </div>
+                            <div class="${this.type === 'purchase_order' ? '' : 'hidden'} space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-300 mb-1">Received By</label>
+                                    <input id="doc-received-by" type="text" class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-shadow" placeholder="Name of receiver">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-300 mb-1">Stamp Text</label>
+                                    <input id="doc-stamp-text" type="text" class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-shadow" placeholder="Stamp / received confirmation">
+                                </div>
+                            </div>
                         </div>
                         <div class="bg-slate-900/50 p-6 rounded-lg border border-slate-700 h-fit space-y-3 ${this.type === 'receipt' ? 'hidden' : ''}">
                             <div class="flex justify-between text-slate-400">
@@ -175,6 +185,12 @@ const DocumentForm = {
             document.getElementById('doc-status').value = doc.status;
             document.getElementById('doc-notes').value = doc.notes || '';
             document.getElementById('doc-terms').value = doc.terms_conditions || '';
+            if (document.getElementById('doc-received-by')) {
+                document.getElementById('doc-received-by').value = doc.received_by || '';
+            }
+            if (document.getElementById('doc-stamp-text')) {
+                document.getElementById('doc-stamp-text').value = doc.stamp_text || '';
+            }
 
             this.items = doc.items || [];
             this.renderItems();
@@ -299,6 +315,8 @@ const DocumentForm = {
             status: document.getElementById('doc-status').value,
             notes: document.getElementById('doc-notes').value,
             terms_conditions: document.getElementById('doc-terms').value,
+            received_by: document.getElementById('doc-received-by') ? document.getElementById('doc-received-by').value : null,
+            stamp_text: document.getElementById('doc-stamp-text') ? document.getElementById('doc-stamp-text').value : null,
             items: this.items.map((item, index) => ({
                 product_id: item.product_id || null,
                 item_name: item.item_name,

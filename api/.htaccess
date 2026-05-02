@@ -1,5 +1,11 @@
 RewriteEngine On
 
+# Increase PHP execution time for PDF generation
+php_value max_execution_time 300
+php_value memory_limit 256M
+php_value post_max_size 50M
+php_value upload_max_filesize 50M
+
 # Ensure Authorization header is passed to PHP
 RewriteCond %{HTTP:Authorization} ^(.*)
 RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]

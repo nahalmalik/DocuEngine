@@ -6,12 +6,27 @@ class BaseDocumentService {
     private $mainTable;
     private $itemTable;
     private $documentPrefix;
+    private $tableColumns = null;
 
     public function __construct($mainTable, $itemTable, $documentPrefix) {
         $this->db = Database::getConnection();
         $this->mainTable = $mainTable;
         $this->itemTable = $itemTable;
         $this->documentPrefix = $documentPrefix;
+    }
+
+    private function loadTableColumns() {
+        if ($this->tableColumns !== null) {
+            return;
+        }
+        $stmt = $this->db->prepare("SHOW COLUMNS FROM {$this->mainTable}");
+        $stmt->execute();
+        $this->tableColumns = array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'Field');
+    }
+
+    private function hasColumn($column) {
+        $this->loadTableColumns();
+        return in_array($column, $this->tableColumns, true);
     }
 
     public function getAll($user_id) {
@@ -46,11 +61,9 @@ class BaseDocumentService {
         $numberField = $this->getNumberFieldName();
         $docNumber = $data[$numberField] ?? $this->generateNextNumber($user_id);
 
-        $sql = "INSERT INTO {$this->mainTable} (user_id, customer_id, {$numberField}, issue_date, status, subtotal, tax_total, discount_total, grand_total, notes, terms_conditions) 
-                VALUES (:user_id, :customer_id, :doc_num, :issue_date, :status, :subtotal, :tax_total, :discount_total, :grand_total, :notes, :terms)";
-        
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([
+        $extraFields = '';
+        $extraValues = '';
+        $params = [
             'user_id' => $user_id,
             'customer_id' => $data['customer_id'],
             'doc_num' => $docNumber,
@@ -62,7 +75,25 @@ class BaseDocumentService {
             'grand_total' => $totals['grand_total'],
             'notes' => $data['notes'] ?? null,
             'terms' => $data['terms_conditions'] ?? null
-        ]);
+        ];
+
+        if ($this->hasColumn('received_by')) {
+            $extraFields .= ', received_by';
+            $extraValues .= ', :received_by';
+            $params['received_by'] = $data['received_by'] ?? null;
+        }
+
+        if ($this->hasColumn('stamp_text')) {
+            $extraFields .= ', stamp_text';
+            $extraValues .= ', :stamp_text';
+            $params['stamp_text'] = $data['stamp_text'] ?? null;
+        }
+
+        $sql = "INSERT INTO {$this->mainTable} (user_id, customer_id, {$numberField}, issue_date, status, subtotal, tax_total, discount_total, grand_total, notes, terms_conditions{$extraFields}) 
+                VALUES (:user_id, :customer_id, :doc_num, :issue_date, :status, :subtotal, :tax_total, :discount_total, :grand_total, :notes, :terms{$extraValues})";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
 
         $docId = $this->db->lastInsertId();
 
@@ -75,20 +106,8 @@ class BaseDocumentService {
         $calculation = $this->calculateTotals($data['items'] ?? []);
         $totals = $calculation['totals'];
 
-        $sql = "UPDATE {$this->mainTable} SET 
-                customer_id = :customer_id, 
-                issue_date = :issue_date, 
-                status = :status, 
-                subtotal = :subtotal, 
-                tax_total = :tax_total, 
-                discount_total = :discount_total, 
-                grand_total = :grand_total, 
-                notes = :notes, 
-                terms_conditions = :terms 
-                WHERE id = :id AND user_id = :user_id";
-        
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([
+        $updateFields = '';
+        $params = [
             'id' => $id,
             'user_id' => $user_id,
             'customer_id' => $data['customer_id'],
@@ -100,7 +119,32 @@ class BaseDocumentService {
             'grand_total' => $totals['grand_total'],
             'notes' => $data['notes'] ?? null,
             'terms' => $data['terms_conditions'] ?? null
-        ]);
+        ];
+
+        if ($this->hasColumn('received_by')) {
+            $updateFields .= ', received_by = :received_by';
+            $params['received_by'] = $data['received_by'] ?? null;
+        }
+
+        if ($this->hasColumn('stamp_text')) {
+            $updateFields .= ', stamp_text = :stamp_text';
+            $params['stamp_text'] = $data['stamp_text'] ?? null;
+        }
+
+        $sql = "UPDATE {$this->mainTable} SET 
+                customer_id = :customer_id, 
+                issue_date = :issue_date, 
+                status = :status, 
+                subtotal = :subtotal, 
+                tax_total = :tax_total, 
+                discount_total = :discount_total, 
+                grand_total = :grand_total, 
+                notes = :notes, 
+                terms_conditions = :terms{$updateFields} 
+                WHERE id = :id AND user_id = :user_id";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
 
         // Replace items
         $stmtDelete = $this->db->prepare("DELETE FROM {$this->itemTable} WHERE {$this->getForeignKeyName()} = :doc_id");

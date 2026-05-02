@@ -154,6 +154,8 @@ CREATE TABLE IF NOT EXISTS purchase_orders (
     grand_total DECIMAL(12,2) NOT NULL DEFAULT 0.00,
     notes TEXT,
     terms_conditions TEXT,
+    received_by VARCHAR(255) NULL,
+    stamp_text VARCHAR(255) NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,

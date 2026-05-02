@@ -114,8 +114,18 @@ const Documents = {
             documents.forEach(doc => {
                 const docNumber = this.getDocumentNumber(doc, type);
                 const token = localStorage.getItem('token');
-                const baseUrl = API.getBaseUrl();
-                const pdfDownloadUrl = `${baseUrl}/pdf/${doc.id}?type=${type}&token=${token}&action=view`;
+                
+                // Build absolute URL for PDF download
+                let pdfDownloadUrl;
+                if (window.location.protocol === 'file:' || window.location.protocol === 'capacitor:') {
+                    // Mobile/Capacitor environment - use absolute IP
+                    pdfDownloadUrl = `http://192.168.18.51/quotation-system/api/v1/pdf/${doc.id}?type=${type}&token=${token}&action=view`;
+                } else {
+                    // Web environment - use window origin
+                    const origin = window.location.origin;
+                    const basePath = '/quotation-system/api/v1';
+                    pdfDownloadUrl = `${origin}${basePath}/pdf/${doc.id}?type=${type}&token=${token}&action=view`;
+                }
 
                 html += `
                     <tr class="hover:bg-slate-900/50">
@@ -123,9 +133,10 @@ const Documents = {
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-400">${doc.customer?.company_name || 'N/A'}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-400">${doc.issue_date}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
-                            <button onclick="window.open('${pdfDownloadUrl}', '_system')" class="text-indigo-400 hover:text-indigo-300 font-bold border border-indigo-400/30 px-3 py-1 rounded">Download PDF</button>
+                            <button onclick="Documents.downloadPdf(${doc.id}, '${type}')" class="text-indigo-400 hover:text-indigo-300 font-bold border border-indigo-400/30 px-3 py-1 rounded">Download PDF</button>
                             <button onclick="Documents.openShareModal(${doc.id}, '${type}')" class="text-green-500 hover:text-green-400 font-medium">Share</button>
                             <a href="#/documents/edit/${doc.id}?type=${type}" class="text-blue-400 hover:text-blue-300 font-medium">Update</a>
+                            ${type === 'quotation' ? `<button onclick="Documents.convertQuotation(${doc.id})" class="text-amber-400 hover:text-amber-300 font-medium">Convert</button>` : ''}
                             <button onclick="Documents.deleteDocument(${doc.id}, '${type}')" class="text-red-500 hover:text-red-700 font-medium">Delete</button>
                         </td>
                     </tr>
@@ -156,8 +167,18 @@ const Documents = {
         modal.classList.remove('hidden');
 
         const token = localStorage.getItem('token');
-        const baseUrl = API.getBaseUrl();
-        const shareUrl = `${baseUrl}/pdf/${id}?type=${type}&token=${token}&action=view`;
+        
+        // Build absolute URL for sharing
+        let shareUrl;
+        if (window.location.protocol === 'file:' || window.location.protocol === 'capacitor:') {
+            // Mobile/Capacitor environment
+            shareUrl = `http://192.168.18.51/quotation-system/api/v1/pdf/${id}?type=${type}&token=${token}&action=view`;
+        } else {
+            // Web environment
+            const origin = window.location.origin;
+            const basePath = '/quotation-system/api/v1';
+            shareUrl = `${origin}${basePath}/pdf/${id}?type=${type}&token=${token}&action=view`;
+        }
 
         document.getElementById('share-email-btn').onclick = () => {
             const mailUrl = `mailto:?subject=Document Share&body=Here is your document: ${shareUrl}`;
@@ -170,5 +191,59 @@ const Documents = {
             window.open(waUrl, '_system');
             modal.classList.add('hidden');
         };
+    },
+
+    downloadPdf(id, type) {
+        const token = localStorage.getItem('token');
+        
+        // Build absolute URL for PDF download
+        let pdfUrl;
+        if (window.location.protocol === 'file:' || window.location.protocol === 'capacitor:') {
+            // Mobile/Capacitor environment - use absolute IP
+            pdfUrl = `http://192.168.18.51/quotation-system/api/v1/pdf/${id}?type=${type}&token=${token}&action=view`;
+        } else {
+            // Web environment - use window origin
+            const origin = window.location.origin;
+            const basePath = '/quotation-system/api/v1';
+            pdfUrl = `${origin}${basePath}/pdf/${id}?type=${type}&token=${token}&action=view`;
+        }
+        
+        // Method 1: Try opening in new window first (for viewing)
+        try {
+            const newWindow = window.open(pdfUrl, '_blank');
+            if (!newWindow) {
+                // If blocked, fallback to download method
+                this.downloadPdfFallback(pdfUrl, id, type);
+            }
+        } catch (error) {
+            console.error('Error opening PDF:', error);
+            App.showToast('Failed to download PDF. Please try again.', 'error');
+        }
+    },
+
+    async convertQuotation(id) {
+        if (!confirm('Convert this quotation into an invoice?')) {
+            return;
+        }
+
+        try {
+            await API.post(`/quotations/${id}/convert`);
+            App.showToast('Quotation converted to invoice successfully');
+            window.location.hash = '#/documents?type=invoice';
+        } catch (error) {
+            console.error('Failed to convert quotation', error);
+            App.showToast('Failed to convert quotation', 'error');
+        }
+    },
+
+    downloadPdfFallback(pdfUrl, id, type) {
+        // Create a hidden link element and trigger download
+        const link = document.createElement('a');
+        link.href = pdfUrl;
+        link.setAttribute('download', `document_${id}.pdf`);
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 };

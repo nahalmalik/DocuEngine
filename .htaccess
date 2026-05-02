@@ -1,0 +1,20 @@
+# .htaccess - Apache Configuration
+
+# Increase PHP execution time for PDF generation
+php_value max_execution_time 300
+php_value memory_limit 256M
+
+# Enable gzip compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>
+
+# Add proper headers for PDFs
+<FilesMatch "\.pdf$">
+    Header set Cache-Control "max-age=3600, public"
+    Header set Content-Type "application/pdf"
+</FilesMatch>
+
+# Security headers
+Header set X-Content-Type-Options "nosniff"
+Header set X-Frame-Options "SAMEORIGIN"
