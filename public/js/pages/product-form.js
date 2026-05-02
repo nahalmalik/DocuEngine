@@ -27,27 +27,27 @@ const ProductForm = {
                         <div class="grid grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-slate-300 mb-1">SKU</label>
-                                <input type="text" id="prod-sku" class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                                <input type="text" id="prod-sku" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-slate-300 mb-1">Product Name <span class="text-red-500">*</span></label>
-                                <input type="text" id="prod-name" required class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                                <input type="text" id="prod-name" required class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
                             </div>
                         </div>
                         
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-1">Description</label>
-                            <textarea id="prod-desc" rows="3" class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"></textarea>
+                            <textarea id="prod-desc" rows="3" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"></textarea>
                         </div>
                         
                         <div class="grid grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-sm font-medium text-slate-300 mb-1">Unit Price <span class="text-red-500">*</span></label>
-                                <input type="number" step="0.01" min="0" id="prod-price" required class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                                <label class="block text-sm font-medium text-slate-300 mb-1">Unit Price (Rs.) <span class="text-red-500">*</span></label>
+                                <input type="number" step="0.01" min="0" id="prod-price" required class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-slate-300 mb-1">Tax Rate (%)</label>
-                                <input type="number" step="0.01" min="0" id="prod-tax" value="0" class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                                <input type="number" step="0.01" min="0" id="prod-tax" value="0" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
                             </div>
                         </div>
 

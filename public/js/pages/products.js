@@ -61,7 +61,7 @@ const Products = {
                     <tr class="hover:bg-slate-900/50">
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">${prod.sku || 'N/A'}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-white">${prod.name}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-400">$${parseFloat(prod.unit_price).toFixed(2)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-400">Rs. ${parseFloat(prod.unit_price).toFixed(2)}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
                             <a href="#/products/view/${prod.id}" class="text-indigo-600 hover:text-indigo-900">View</a>
                             <a href="#/products/edit/${prod.id}" class="text-blue-600 hover:text-blue-900">Update</a>

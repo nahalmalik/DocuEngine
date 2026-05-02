@@ -4,6 +4,7 @@ const DocumentForm = {
     documentId: null,
     type: 'quotation',
     items: [],
+    products: [],
 
     getTypeFromUrl() {
         const hash = window.location.hash;
@@ -34,17 +35,17 @@ const DocumentForm = {
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-slate-300 mb-1">Customer <span class="text-red-500">*</span></label>
-                                <select id="doc-customer" required class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                                <select id="doc-customer" required class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
                                     <option value="">Select Customer</option>
                                 </select>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-slate-300 mb-1">Issue Date <span class="text-red-500">*</span></label>
-                                <input type="date" id="doc-date" required class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                                <input type="date" id="doc-date" required class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
                             </div>
                             <div class="${this.type === 'quotation' || this.type === 'receipt' ? 'hidden' : ''}">
                                 <label class="block text-sm font-medium text-slate-300 mb-1">Due Date</label>
-                                <input type="date" id="doc-due-date" class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                                <input type="date" id="doc-due-date" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
                             </div>
                         </div>
 
@@ -66,6 +67,15 @@ const DocumentForm = {
                                         </tr>
                                     </thead>
                                     <tbody id="items-body" class="divide-y divide-slate-700"></tbody>
+                                    <tfoot class="${this.type === 'receipt' ? 'hidden' : ''}">
+                                        <tr>
+                                            <td colspan="3" class="px-4 py-4 text-right text-sm font-bold text-slate-300">Grand Total:</td>
+                                            <td class="px-4 py-4 text-right text-lg font-bold text-indigo-400">
+                                                Rs. <span id="grand-total">0.00</span>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                         </div>
@@ -74,11 +84,11 @@ const DocumentForm = {
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-slate-700 pt-6">
                             <div>
                                 <label class="block text-sm font-medium text-slate-300 mb-1">Notes</label>
-                                <textarea id="doc-notes" rows="4" class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg outline-none"></textarea>
+                                <textarea id="doc-notes" rows="4" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg outline-none"></textarea>
                             </div>
                             <div class="${this.type === 'purchase_order' ? 'hidden' : ''}">
                                 <label class="block text-sm font-medium text-slate-300 mb-1">Terms & Conditions</label>
-                                <textarea id="doc-terms" rows="4" class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg outline-none"></textarea>
+                                <textarea id="doc-terms" rows="4" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg outline-none"></textarea>
                             </div>
                         </div>
 
@@ -101,6 +111,14 @@ const DocumentForm = {
             select.innerHTML += `<option value="${c.id}">${c.company_name}</option>`;
         });
 
+        // Fetch products for the item selector
+        try {
+            const productsRes = await API.get('/products');
+            this.products = productsRes.data || [];
+        } catch (error) {
+            console.error('Failed to load products', error);
+        }
+
         if (this.documentId) {
             const endpoint = this.type === 'purchase_order' ? 'purchase-orders' : this.type + 's';
             const res = await API.get(`/${endpoint}/${this.documentId}`);
@@ -122,27 +140,67 @@ const DocumentForm = {
         const id = Date.now();
         const row = document.createElement('tr');
         row.id = `item-${id}`;
+
+        let productOptions = '<option value="">-- Select Product --</option>';
+        this.products.forEach(p => {
+            productOptions += `<option value="${p.id}" ${data?.product_id == p.id ? 'selected' : ''}>${p.name}</option>`;
+        });
+
         row.innerHTML = `
             <td class="px-4 py-3">
-                <input type="text" placeholder="Item Name" value="${data?.item_name || ''}" class="w-full mb-1 px-3 py-1 bg-white border border-slate-300 rounded text-sm outline-none">
-                <textarea placeholder="Description" class="w-full px-3 py-1 bg-white border border-slate-300 rounded text-xs outline-none">${data?.description || ''}</textarea>
+                <select onchange="DocumentForm.onProductChange(${id}, this.value)" class="w-full mb-1 px-3 py-1 bg-white text-black border border-slate-300 rounded text-sm outline-none">
+                    ${productOptions}
+                </select>
+                <input type="text" placeholder="Item Name" value="${data?.item_name || ''}" class="w-full mb-1 px-3 py-1 bg-white text-black border border-slate-300 rounded text-sm outline-none">
+                <textarea placeholder="Description" class="w-full px-3 py-1 bg-white text-black border border-slate-300 rounded text-xs outline-none">${data?.description || ''}</textarea>
             </td>
             <td class="px-4 py-3 text-center">
-                <input type="number" step="0.01" value="${data?.quantity || '1.00'}" onchange="DocumentForm.calculateRow(${id})" class="w-20 px-2 py-1 bg-white border border-slate-300 rounded text-sm text-center">
+                <input type="number" step="0.01" value="${data?.quantity || '1.00'}" onchange="DocumentForm.calculateRow(${id})" class="w-20 px-2 py-1 bg-white text-black border border-slate-300 rounded text-sm text-center">
             </td>
             <td class="px-4 py-3 text-right ${this.type === 'receipt' ? 'hidden' : ''}">
-                <input type="number" step="0.01" value="${data?.unit_price || '0.00'}" onchange="DocumentForm.calculateRow(${id})" class="w-28 px-2 py-1 bg-white border border-slate-300 rounded text-sm text-right">
+                <div class="flex items-center justify-end gap-1">
+                    <span class="text-xs text-slate-400">Rs.</span>
+                    <input type="number" step="0.01" value="${data?.unit_price || '0.00'}" onchange="DocumentForm.calculateRow(${id})" class="w-28 px-2 py-1 bg-white text-black border border-slate-300 rounded text-sm text-right">
+                </div>
             </td>
             <td class="px-4 py-3 text-right font-medium text-slate-100 ${this.type === 'receipt' ? 'hidden' : ''}">
+                <span class="text-xs text-slate-400">Rs.</span>
                 <span id="total-${id}">${data?.line_total || '0.00'}</span>
             </td>
             <td class="px-4 py-3 text-center">
-                <button type="button" onclick="this.closest('tr').remove()" class="text-red-400 hover:text-red-600">
+                <button type="button" onclick="DocumentForm.removeItem(${id})" class="text-red-400 hover:text-red-600">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                 </button>
             </td>
         `;
         document.getElementById('items-body').appendChild(row);
+    },
+
+    onProductChange(id, productId) {
+        if (!productId) return;
+        const product = this.products.find(p => p.id == productId);
+        if (product) {
+            const row = document.getElementById(`item-${id}`);
+            const inputs = row.querySelectorAll('input');
+            const textarea = row.querySelector('textarea');
+
+            inputs[0].value = product.name;
+            textarea.value = product.description || '';
+
+            if (this.type !== 'receipt') {
+                inputs[2].value = product.unit_price || 0;
+            }
+
+            this.calculateRow(id);
+        }
+    },
+
+    removeItem(id) {
+        const row = document.getElementById(`item-${id}`);
+        if (row) {
+            row.remove();
+            this.updateGrandTotal();
+        }
     },
 
     calculateRow(id) {
@@ -151,6 +209,17 @@ const DocumentForm = {
         const price = parseFloat(row.querySelectorAll('input')[2].value) || 0;
         const total = (qty * price).toFixed(2);
         document.getElementById(`total-${id}`).textContent = total;
+
+        this.updateGrandTotal();
+    },
+
+    updateGrandTotal() {
+        let grandTotal = 0;
+        document.querySelectorAll('[id^="total-"]').forEach(span => {
+            grandTotal += parseFloat(span.textContent) || 0;
+        });
+        const gtElem = document.getElementById('grand-total');
+        if (gtElem) gtElem.textContent = grandTotal.toFixed(2);
     },
 
     async save(e) {
@@ -158,6 +227,7 @@ const DocumentForm = {
         const items = [];
         document.querySelectorAll('#items-body tr').forEach(row => {
             items.push({
+                product_id: row.querySelector('select').value || null,
                 item_name: row.querySelectorAll('input')[0].value,
                 description: row.querySelector('textarea').value,
                 quantity: row.querySelectorAll('input')[1].value,

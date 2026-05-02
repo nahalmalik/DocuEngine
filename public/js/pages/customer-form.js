@@ -26,34 +26,34 @@ const CustomerForm = {
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-1">Company Name <span class="text-red-500">*</span></label>
-                            <input type="text" id="cust-company" required class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                            <input type="text" id="cust-company" required class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-1">Contact Person</label>
-                            <input type="text" id="cust-contact" class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                            <input type="text" id="cust-contact" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-1">Email</label>
-                            <input type="email" id="cust-email" class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                            <input type="email" id="cust-email" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-1">Phone</label>
-                            <input type="text" id="cust-phone" class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                            <input type="text" id="cust-phone" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-1">Tax Number / VAT</label>
-                            <input type="text" id="cust-tax" class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                            <input type="text" id="cust-tax" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
                         </div>
                     </div>
                     
                     <div class="space-y-6">
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-1">Billing Address</label>
-                            <textarea id="cust-billing" rows="3" class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"></textarea>
+                            <textarea id="cust-billing" rows="3" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"></textarea>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-1">Shipping Address</label>
-                            <textarea id="cust-shipping" rows="3" class="w-full px-4 py-2 bg-slate-50 text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"></textarea>
+                            <textarea id="cust-shipping" rows="3" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"></textarea>
                         </div>
                     </div>
 

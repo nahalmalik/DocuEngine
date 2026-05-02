@@ -14,19 +14,22 @@ class PdfController {
         if (empty($url)) return '';
 
         // Extract filename from URL
-        $filename = basename($url);
+        $filename = basename(parse_url($url, PHP_URL_PATH));
 
         // Define search paths for the image
-        // Try multiple ways to locate the storage folder
+        $rootDir = realpath(__DIR__ . '/../../');
         $paths = [
+            $rootDir . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $filename,
             __DIR__ . '/../../storage/images/' . $filename,
-            dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $filename,
             'C:/xampp/htdocs/quotation-system/storage/images/' . $filename
         ];
 
         foreach ($paths as $path) {
-            if (file_exists($path) && is_file($path)) {
-                $data = file_get_contents($path);
+            if (!empty($path) && file_exists($path) && is_file($path)) {
+                // Skip images larger than 5MB
+                if (filesize($path) > 5 * 1024 * 1024) continue;
+
+                $data = @file_get_contents($path);
                 if ($data === false) continue;
 
                 $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
@@ -35,18 +38,6 @@ class PdfController {
                 return 'data:image/' . $ext . ';base64,' . base64_encode($data);
             }
         }
-
-        // Final fallback: try to fetch via URL if local path fails (less efficient)
-        if (filter_var($url, FILTER_VALIDATE_URL)) {
-            $ctx = stream_context_create(['http' => ['timeout' => 5]]);
-            $data = @file_get_contents($url, false, $ctx);
-            if ($data !== false) {
-                $ext = strtolower(pathinfo(parse_url($url, PHP_URL_PATH), PATHINFO_EXTENSION));
-                if (empty($ext)) $ext = 'png';
-                return 'data:image/' . $ext . ';base64,' . base64_encode($data);
-            }
-        }
-
         return '';
     }
 
@@ -116,17 +107,17 @@ class PdfController {
             $html .= '<table class="details-table"><tr><td><strong>Bill To:</strong><br>'.htmlspecialchars($document['customer']['company_name'] ?? '').'<br>'.nl2br(htmlspecialchars($document['customer']['billing_address'] ?? '')).'</td><td style="text-align: right;"><div class="doc-title">'.$docTitle.'</div><strong>No:</strong> '.htmlspecialchars($document['document_number']).'<br><strong>Date:</strong> '.htmlspecialchars($document['issue_date']).'</td></tr></table>';
 
             $html .= '<table class="items-table"><thead><tr><th style="width: 5%">#</th><th>Product</th><th>Description</th><th style="width: 10%">Qty</th>';
-            if ($type !== 'receipt') $html .= '<th style="width: 15%">Price</th><th style="width: 15%">Total</th>';
+            if ($type !== 'receipt') $html .= '<th style="width: 15%">Price (Rs.)</th><th style="width: 15%">Total (Rs.)</th>';
             $html .= '</tr></thead><tbody>';
             foreach ($document['items'] as $i => $item) {
                 $html .= '<tr><td>'.($i+1).'</td><td>'.htmlspecialchars($item['item_name']).'</td><td><small>'.nl2br(htmlspecialchars($item['description'])).'</small></td><td>'.$item['quantity'].'</td>';
-                if ($type !== 'receipt') $html .= '<td>'.$item['unit_price'].'</td><td>'.$item['line_total'].'</td>';
+                if ($type !== 'receipt') $html .= '<td>'.number_format($item['unit_price'], 2).'</td><td>'.number_format($item['line_total'], 2).'</td>';
                 $html .= '</tr>';
             }
             $html .= '</tbody></table>';
 
             if ($type !== 'receipt') {
-                $html .= '<div class="totals"><table class="totals-table"><tr><td>Subtotal:</td><td>'.$document['subtotal'].'</td></tr><tr><td>Tax:</td><td>'.$document['tax_total'].'</td></tr><tr><td style="font-size:15px"><strong>Total:</strong></td><td style="font-size:15px"><strong>'.$document['grand_total'].'</strong></td></tr></table></div>';
+                $html .= '<div class="totals"><table class="totals-table"><tr><td>Subtotal:</td><td>Rs. '.number_format($document['subtotal'], 2).'</td></tr><tr><td>Tax:</td><td>Rs. '.number_format($document['tax_total'], 2).'</td></tr><tr><td style="font-size:15px"><strong>Total:</strong></td><td style="font-size:15px"><strong>Rs. '.number_format($document['grand_total'], 2).'</strong></td></tr></table></div>';
             }
 
             $html .= '<div class="footer">';
