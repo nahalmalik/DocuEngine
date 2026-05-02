@@ -17,29 +17,50 @@ class PdfController {
             return null;
         }
 
-        // If already a data URI, keep it as-is
         if (strpos($imagePath, 'data:') === 0) {
             return $imagePath;
         }
 
-        // If it's a remote URL, skip it to avoid blocking DOMPDF
+        $imageData = null;
+        $mimeType = 'image/png';
+
+        // Handle remote URLs by fetching image data server-side
         if (filter_var($imagePath, FILTER_VALIDATE_URL)) {
-            return null;
+            $parsed = parse_url($imagePath);
+            if (!empty($parsed['path']) && strpos($parsed['path'], '/storage/images/') !== false) {
+                $filename = basename($parsed['path']);
+                $localPath = __DIR__ . '/../../storage/images/' . $filename;
+                if (file_exists($localPath)) {
+                    $imageData = file_get_contents($localPath);
+                    $mimeType = mime_content_type($localPath) ?: 'image/png';
+                } else {
+                    return $imagePath;
+                }
+            } else {
+                $imageData = @file_get_contents($imagePath);
+                if ($imageData === false) {
+                    return $imagePath;
+                }
+                $info = @getimagesizefromstring($imageData);
+                if ($info && !empty($info['mime'])) {
+                    $mimeType = $info['mime'];
+                }
+            }
+        } else {
+            $localPath = $imagePath;
+            if (!file_exists($localPath)) {
+                $localPath = __DIR__ . '/../../' . ltrim($imagePath, '/');
+            }
+
+            if (!file_exists($localPath)) {
+                return null;
+            }
+
+            $imageData = file_get_contents($localPath);
+            $mimeType = mime_content_type($localPath) ?: 'image/png';
         }
 
-        // Resolve relative project paths
-        $localPath = $imagePath;
-        if (!file_exists($localPath)) {
-            $localPath = __DIR__ . '/../../' . ltrim($imagePath, '/');
-        }
-
-        if (!file_exists($localPath)) {
-            return null;
-        }
-
-        $imageData = base64_encode(file_get_contents($localPath));
-        $mimeType = mime_content_type($localPath) ?: 'image/png';
-        return 'data:' . $mimeType . ';base64,' . $imageData;
+        return 'data:' . $mimeType . ';base64,' . base64_encode($imageData);
     }
 
     public function generate($id) {
@@ -110,10 +131,8 @@ class PdfController {
             }
 
             $receivedBy = '';
-            $stampText = '';
-            if ($type === 'purchase_order') {
+            if ($type === 'receipt') {
                 $receivedBy = $document['received_by'] ?? '';
-                $stampText = $document['stamp_text'] ?? '';
             }
 
             $html = '<!DOCTYPE html><html><head><meta charset="utf-8"><style>
@@ -177,17 +196,17 @@ class PdfController {
             if (!empty($document['terms_conditions']) && $type !== 'purchase_order') $html .= '<strong>Terms & Conditions:</strong><br>' . nl2br(htmlspecialchars($document['terms_conditions'])) . '<br><br>';
 
             if ($type === 'purchase_order') {
-                $html .= '<div class="signature-block">';
-                $html .= '<div class="signature-box" style="text-align:left;">';
-                $html .= '<div class="signature-label">Received By</div>' . nl2br(htmlspecialchars($receivedBy ?: '_______________________')) . '<br><br>';
-                $html .= '<div class="signature-label">Stamp</div>';
-                if (!empty($stampText)) {
-                    $html .= '<div>' . nl2br(htmlspecialchars($stampText)) . '</div>';
-                } elseif ($signatureUrl) {
+                $html .= '<div style="margin-top: 40px; float: right; text-align: right;"><strong>Authorized Signature</strong><br>';
+                if ($signatureUrl) {
                     $html .= '<img src="' . htmlspecialchars($signatureUrl) . '" class="signature-image"><br>';
                 } else {
-                    $html .= '<div style="width:150px; height:80px; border:1px dashed #999; display:inline-block;"></div>';
+                    $html .= '<br><br><br>_______________________<br>';
                 }
+                $html .= '</div>';
+            } elseif ($type === 'receipt') {
+                $html .= '<div class="signature-block">';
+                $html .= '<div class="signature-box" style="text-align:left;">';
+                $html .= '<div class="signature-label">Received By</div>' . nl2br(htmlspecialchars($receivedBy ?: '_______________________')) . '<br>';
                 $html .= '</div>';
                 $html .= '<div class="signature-box" style="text-align:right;">';
                 $html .= '<div class="signature-label">Authorized Signature</div>';
@@ -209,7 +228,7 @@ class PdfController {
 
             // Configure DOMPDF with optimizations
             $options = new Options();
-            $options->set('isRemoteEnabled', false);  // Disable remote to prevent timeout
+            $options->set('isRemoteEnabled', true);
             $options->set('isHtml5ParserEnabled', true);
             $options->set('defaultFont', 'Helvetica');
             $options->set('dpi', 96);
@@ -225,7 +244,13 @@ class PdfController {
                 $dompdf->render();
             } catch (Exception $renderEx) {
                 error_log('DOMPDF Render Error: ' . $renderEx->getMessage());
-                throw new Exception('PDF rendering timeout or error. Try again.');
+
+                // Retry without images in case image loading breaks rendering
+                $htmlWithoutImages = preg_replace('/<img[^>]+>/i', '', $html);
+                $dompdf = new Dompdf($options);
+                $dompdf->loadHtml($htmlWithoutImages);
+                $dompdf->setPaper('A4', 'portrait');
+                $dompdf->render();
             }
 
             $output = $dompdf->output();
