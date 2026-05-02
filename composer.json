@@ -1,0 +1,14 @@
+{
+    "name": "document-engine/app",
+    "description": "Quotation Invoice Management System",
+    "type": "project",
+    "require": {
+        "php": ">=8.0",
+        "dompdf/dompdf": "^3.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "api/"
+        }
+    }
+}

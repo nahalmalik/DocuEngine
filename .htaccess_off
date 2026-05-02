@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# Route /api to the api folder
+RewriteCond %{REQUEST_URI} ^/api/ [NC]
+RewriteRule ^api/(.*)$ api/$1 [L]
+
+# Route all other requests to the public folder (SPA)
+RewriteCond %{REQUEST_URI} !^/public/ [NC]
+RewriteCond %{REQUEST_URI} !^/api/ [NC]
+RewriteRule ^(.*)$ public/$1 [L]

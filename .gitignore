@@ -1,0 +1,19 @@
+# Node
+node_modules/
+
+# Android build
+android/.gradle/
+android/build/
+android/app/build/
+
+# Logs
+*.log
+
+# Capacitor
+android/.idea/
+dist/
+www/
+
+# OS files
+.DS_Store
+Thumbs.db
