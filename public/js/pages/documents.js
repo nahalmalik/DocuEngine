@@ -110,22 +110,13 @@ const Documents = {
                 return;
             }
 
+            const token = localStorage.getItem('token');
+            const baseUrl = API.getBaseUrl();
+            const isMobile = API.isCapacitor;
+
             let html = '';
             documents.forEach(doc => {
                 const docNumber = this.getDocumentNumber(doc, type);
-                const token = localStorage.getItem('token');
-                
-                // Build absolute URL for PDF download
-                let pdfDownloadUrl;
-                if (window.location.protocol === 'file:' || window.location.protocol === 'capacitor:') {
-                    // Mobile/Capacitor environment - use absolute IP
-                    pdfDownloadUrl = `http://192.168.18.51/quotation-system/api/v1/pdf/${doc.id}?type=${type}&token=${token}&action=view`;
-                } else {
-                    // Web environment - use window origin
-                    const origin = window.location.origin;
-                    const basePath = '/quotation-system/api/v1';
-                    pdfDownloadUrl = `${origin}${basePath}/pdf/${doc.id}?type=${type}&token=${token}&action=view`;
-                }
 
                 html += `
                     <tr class="hover:bg-slate-900/50">
@@ -167,18 +158,8 @@ const Documents = {
         modal.classList.remove('hidden');
 
         const token = localStorage.getItem('token');
-        
-        // Build absolute URL for sharing
-        let shareUrl;
-        if (window.location.protocol === 'file:' || window.location.protocol === 'capacitor:') {
-            // Mobile/Capacitor environment
-            shareUrl = `http://192.168.18.51/quotation-system/api/v1/pdf/${id}?type=${type}&token=${token}&action=view`;
-        } else {
-            // Web environment
-            const origin = window.location.origin;
-            const basePath = '/quotation-system/api/v1';
-            shareUrl = `${origin}${basePath}/pdf/${id}?type=${type}&token=${token}&action=view`;
-        }
+        const baseUrl = API.getBaseUrl();
+        const shareUrl = `${baseUrl}/pdf/${id}?type=${type}&token=${encodeURIComponent(token)}&action=view`;
 
         document.getElementById('share-email-btn').onclick = () => {
             const mailUrl = `mailto:?subject=Document Share&body=Here is your document: ${shareUrl}`;
@@ -195,29 +176,24 @@ const Documents = {
 
     downloadPdf(id, type) {
         const token = localStorage.getItem('token');
-        
-        // Build absolute URL for PDF download
-        let pdfUrl;
-        if (window.location.protocol === 'file:' || window.location.protocol === 'capacitor:') {
-            // Mobile/Capacitor environment - use absolute IP
-            pdfUrl = `http://192.168.18.51/quotation-system/api/v1/pdf/${id}?type=${type}&token=${token}&action=view`;
-        } else {
-            // Web environment - use window origin
+        const baseUrl = API.getBaseUrl();
+        const isMobile = API.isCapacitor;
+
+        // Use 'download' for mobile to trigger the Android DownloadListener we added
+        const action = isMobile ? 'download' : 'view';
+        let pdfUrl = `${baseUrl}/pdf/${id}?type=${type}&token=${encodeURIComponent(token)}&action=${action}`;
+
+        if (pdfUrl.startsWith('../')) {
             const origin = window.location.origin;
-            const basePath = '/quotation-system/api/v1';
-            pdfUrl = `${origin}${basePath}/pdf/${id}?type=${type}&token=${token}&action=view`;
+            const path = window.location.pathname.split('/').slice(0, -2).join('/');
+            pdfUrl = origin + path + pdfUrl.substring(2);
         }
-        
-        // Method 1: Try opening in new window first (for viewing)
-        try {
-            const newWindow = window.open(pdfUrl, '_blank');
-            if (!newWindow) {
-                // If blocked, fallback to download method
-                this.downloadPdfFallback(pdfUrl, id, type);
-            }
-        } catch (error) {
-            console.error('Error opening PDF:', error);
-            App.showToast('Failed to download PDF. Please try again.', 'error');
+
+        if (isMobile) {
+            // This will now be caught by the DownloadListener in MainActivity.java
+            window.location.href = pdfUrl;
+        } else {
+            window.open(pdfUrl, '_blank');
         }
     },
 

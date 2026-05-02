@@ -2,7 +2,9 @@
 
 const API = {
     // Detect environment
-    isCapacitor: window.location.hostname === 'localhost' || window.location.protocol === 'capacitor:' || window.location.protocol === 'http:' && !window.location.pathname.includes('quotation-system'),
+    get isCapacitor() {
+        return !!window.Capacitor || window.location.protocol === 'capacitor:' || window.location.protocol === 'file:' || window.location.hostname === 'localhost';
+    },
 
     // Base URL configuration
     getBaseUrl() {
