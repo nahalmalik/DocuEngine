@@ -2,14 +2,13 @@
 // api/config/config.php
 
 define('APP_NAME', 'Document Engine');
-define('APP_ENV', 'development'); // 'development' or 'production'
+define('APP_ENV', 'production'); // 'development' or 'production'
 
-// Base URL Configuration - FIXED FOR TESTING
-// Replace 192.168.18.51 with your computer's IP if it changes
+// Base URL Configuration
 if (APP_ENV === 'development') {
-    define('BASE_URL', 'http://192.168.18.51/quotation-system');
+    define('BASE_URL', 'http://docu.bizhubpakistan.com');
 } else {
-    define('BASE_URL', 'https://your-production-domain.com');
+    define('BASE_URL', 'http://docu.bizhubpakistan.com');
 }
 
 // Database Configuration

@@ -7,7 +7,7 @@ function createWindow () {
   });
 
   // Load via XAMPP (recommended for your system)
-  win.loadURL('http://localhost/quotation-system/public/');
+  win.loadURL('http://docu.bizhubpakistan.com/public');
 }
 
 app.whenReady().then(createWindow);

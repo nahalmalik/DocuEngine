@@ -55,8 +55,34 @@ const App = {
             <main class="flex-grow overflow-auto p-4 md:p-8 fade-in">
                 ${content}
             </main>
-            <footer class="bg-slate-900 border-t border-slate-800 py-6 mt-auto">
-                <div class="text-center text-slate-400 text-sm font-medium">
+            <footer class="bg-slate-900 border-t border-slate-800 mt-auto">
+                <!-- Install App Banner -->
+                <div id="install-banner" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 px-4">
+                    <div class="flex items-center justify-between max-w-7xl mx-auto">
+                        <div class="flex items-center space-x-3">
+                            <div class="flex-shrink-0">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Install DocuEngine App</p>
+                                <p class="text-xs opacity-90">Get the full experience with our mobile and desktop apps</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="App.showInstallPopup()" class="bg-white text-indigo-600 px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-gray-100 transition-colors">
+                                Install Now
+                            </button>
+                            <button onclick="App.hideInstallBanner()" class="text-white opacity-70 hover:opacity-100 p-1">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center text-slate-400 text-sm font-medium py-4">
                     <p class="text-lg font-bold text-white">DocuEngine</p>
                     <p>Smart Invoice & Document Management System</p>
                     <p class="mt-2">&copy; 2026 | Developed by Nahal Malik</p>
@@ -82,6 +108,37 @@ const App = {
         setTimeout(() => {
             toast.classList.add('translate-x-full');
         }, 3000);
+    },
+
+    showInstallPopup() {
+        const modal = document.getElementById('install-modal');
+        const mobilePanel = document.getElementById('install-mobile-panel');
+        const desktopPanel = document.getElementById('install-desktop-panel');
+        const isMobile = /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent);
+
+        if (isMobile) {
+            mobilePanel.classList.remove('hidden');
+            desktopPanel.classList.add('hidden');
+        } else {
+            desktopPanel.classList.remove('hidden');
+            mobilePanel.classList.add('hidden');
+        }
+
+        modal.classList.remove('hidden');
+    },
+
+    hideInstallPopup() {
+        const modal = document.getElementById('install-modal');
+        if (modal) {
+            modal.classList.add('hidden');
+        }
+    },
+
+    hideInstallBanner() {
+        const banner = document.getElementById('install-banner');
+        if (banner) {
+            banner.style.display = 'none';
+        }
     }
 };
 

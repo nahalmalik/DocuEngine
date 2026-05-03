@@ -46,7 +46,7 @@ const Navbar = {
                                 <a href="#/settings" class="px-2 sm:px-3 py-2 rounded-md text-xs sm:text-sm font-medium hover:bg-slate-700 transition-colors">Settings</a>
                             </div>
                         </div>
-                        <div class="flex items-center ml-2">
+                        <div class="flex items-center ml-2 space-x-2">
                             <span class="hidden lg:inline mr-4 text-sm text-slate-300">${user ? user.name : ''}</span>
                             <button onclick="Auth.logout()" class="px-2 sm:px-3 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium bg-slate-700 hover:bg-slate-600 border border-slate-600 transition-colors">Logout</button>
                         </div>

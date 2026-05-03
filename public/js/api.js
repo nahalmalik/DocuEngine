@@ -8,7 +8,8 @@ const API = {
 
     // Base URL configuration
     getBaseUrl() {
-        return this.isCapacitor ? 'http://192.168.18.51/quotation-system/api/v1' : '../api/v1';
+        // Updated to remove the incorrect '/public' from the API path
+        return this.isCapacitor ? 'http://docu.bizhubpakistan.com/api/v1' : '../api/v1';
     },
 
     async request(endpoint, method = 'GET', body = null) {

@@ -50,11 +50,39 @@
         <div id="toast-message" class="bg-white border-l-4 shadow-lg rounded px-4 py-3 min-w-[300px]"></div>
     </div>
 
+    <!-- Install App Modal -->
+    <div id="install-modal" onclick="App.hideInstallPopup()" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 p-4">
+        <div onclick="event.stopPropagation()" class="w-full max-w-lg rounded-3xl bg-slate-900 border border-slate-700 shadow-2xl p-6">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-semibold text-white">Install DocuEngine</h2>
+                    <p class="mt-2 text-slate-400 text-sm">Choose the correct installer for your device.</p>
+                </div>
+                <button onclick="App.hideInstallPopup()" class="text-slate-400 hover:text-white">✕</button>
+            </div>
+            <div class="mt-6 grid gap-4">
+                <div id="install-mobile-panel" class="rounded-2xl border border-slate-700 bg-slate-800 p-4">
+                    <p class="text-slate-200 font-medium">Mobile Install</p>
+                    <p class="text-slate-400 text-sm mt-1">Download the Android APK and install it on your phone.</p>
+                    <a id="install-apk-link" href="../android/app/build/outputs/apk/debug/app-debug.apk" download class="mt-4 inline-flex w-full justify-center rounded-xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white hover:bg-indigo-500">Download APK</a>
+                </div>
+                <div id="install-desktop-panel" class="rounded-2xl border border-slate-700 bg-slate-800 p-4">
+                    <p class="text-slate-200 font-medium">Desktop Install</p>
+                    <p class="text-slate-400 text-sm mt-1">Download the desktop Electron installer for Windows.</p>
+                    <a id="install-desktop-link" href="../dist/Quotation System Setup 1.0.0.exe" class="mt-4 inline-flex w-full justify-center rounded-xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white hover:bg-indigo-500">Download Desktop App</a>
+                </div>
+            </div>
+            <div class="mt-6 text-right">
+                <button onclick="App.hideInstallPopup()" class="rounded-full border border-slate-700 bg-slate-800 px-4 py-2 text-sm text-slate-300 hover:bg-slate-700">Close</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Main Application Container -->
     <div id="app" class="flex-grow flex flex-col h-full overflow-hidden">
         <!-- Content gets injected here by app.js -->
     </div>
-
+    
     <!-- Scripts -->
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
