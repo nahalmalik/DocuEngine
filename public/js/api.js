@@ -3,12 +3,16 @@
 const API = {
     // Detect environment
     get isCapacitor() {
-        return !!window.Capacitor || window.location.protocol === 'capacitor:' || window.location.protocol === 'file:' || window.location.hostname === 'localhost';
+        return !!window.Capacitor || window.location.protocol === 'capacitor:';
     },
 
     // Base URL configuration
     getBaseUrl() {
-        // Updated to remove the incorrect '/public' from the API path
+        if (window.location.protocol === 'file:') {
+            // When opening the app directly from the file system, use the local XAMPP server.
+            return 'http://localhost/quotation-system/api/v1';
+        }
+        // Use local API for browser development and remote API only for Capacitor/native builds.
         return this.isCapacitor ? 'http://docu.bizhubpakistan.com/api/v1' : '../api/v1';
     },
 

@@ -39,7 +39,24 @@ class SettingController {
         $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
         $baseUrl = defined('BASE_URL') ? rtrim(BASE_URL, '/') : ($protocol . '://' . $host . '/quotation-system');
 
+        $allowedKeys = [
+            'company_name',
+            'company_email',
+            'company_phone',
+            'company_address',
+            'company_logo',
+            'company_signature',
+            'bank_account_title',
+            'bank_account_number',
+            'bank_name',
+            'bank_branch',
+            'company_ntn'
+        ];
+
         foreach ($data as $key => $value) {
+            if (!in_array($key, $allowedKeys, true)) {
+                continue;
+            }
             // Check if the value is a Base64 image
             if (is_string($value) && preg_match('/^data:image\/(\w+);base64,/', $value, $type)) {
                 $base64Data = substr($value, strpos($value, ',') + 1);

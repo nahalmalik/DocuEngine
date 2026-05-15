@@ -61,6 +61,7 @@ const DocumentForm = {
                                         <tr>
                                             <th class="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase">Item Name / Description</th>
                                             <th class="px-4 py-3 text-center text-xs font-medium text-slate-400 uppercase w-24">Qty</th>
+                                            <th class="px-4 py-3 text-right text-xs font-medium text-slate-400 uppercase w-24 ${this.type === 'receipt' ? 'hidden' : ''}">Tax %</th>
                                             <th class="px-4 py-3 text-right text-xs font-medium text-slate-400 uppercase w-32 ${this.type === 'receipt' ? 'hidden' : ''}">Price</th>
                                             <th class="px-4 py-3 text-right text-xs font-medium text-slate-400 uppercase w-32 ${this.type === 'receipt' ? 'hidden' : ''}">Total</th>
                                             <th class="px-4 py-3 text-center text-xs font-medium text-slate-400 uppercase w-16"></th>
@@ -69,7 +70,7 @@ const DocumentForm = {
                                     <tbody id="items-body" class="divide-y divide-slate-700"></tbody>
                                     <tfoot class="${this.type === 'receipt' ? 'hidden' : ''}">
                                         <tr>
-                                            <td colspan="3" class="px-4 py-4 text-right text-sm font-bold text-slate-300">Grand Total:</td>
+                                            <td colspan="4" class="px-4 py-4 text-right text-sm font-bold text-slate-300">Grand Total:</td>
                                             <td class="px-4 py-4 text-right text-lg font-bold text-indigo-400">
                                                 Rs. <span id="grand-total">0.00</span>
                                             </td>
@@ -148,19 +149,22 @@ const DocumentForm = {
 
         row.innerHTML = `
             <td class="px-4 py-3">
-                <select onchange="DocumentForm.onProductChange(${id}, this.value)" class="w-full mb-1 px-3 py-1 bg-white text-black border border-slate-300 rounded text-sm outline-none">
+                <select onchange="DocumentForm.onProductChange(${id}, this.value)" class="item-product w-full mb-1 px-3 py-1 bg-white text-black border border-slate-300 rounded text-sm outline-none">
                     ${productOptions}
                 </select>
-                <input type="text" placeholder="Item Name" value="${data?.item_name || ''}" class="w-full mb-1 px-3 py-1 bg-white text-black border border-slate-300 rounded text-sm outline-none">
-                <textarea placeholder="Description" class="w-full px-3 py-1 bg-white text-black border border-slate-300 rounded text-xs outline-none">${data?.description || ''}</textarea>
+                <input type="text" placeholder="Item Name" value="${data?.item_name || ''}" class="item-name w-full mb-1 px-3 py-1 bg-white text-black border border-slate-300 rounded text-sm outline-none">
+                <textarea placeholder="Description" class="item-description w-full px-3 py-1 bg-white text-black border border-slate-300 rounded text-xs outline-none">${data?.description || ''}</textarea>
             </td>
             <td class="px-4 py-3 text-center">
-                <input type="number" step="0.01" value="${data?.quantity || '1.00'}" onchange="DocumentForm.calculateRow(${id})" class="w-20 px-2 py-1 bg-white text-black border border-slate-300 rounded text-sm text-center">
+                <input type="number" step="0.01" value="${data?.quantity || '1.00'}" onchange="DocumentForm.calculateRow(${id})" class="item-qty w-20 px-2 py-1 bg-white text-black border border-slate-300 rounded text-sm text-center">
+            </td>
+            <td class="px-4 py-3 text-right ${this.type === 'receipt' ? 'hidden' : ''}">
+                <input type="number" step="0.01" value="${data?.tax_rate ?? '0.00'}" onchange="DocumentForm.calculateRow(${id})" class="item-tax w-20 px-2 py-1 bg-white text-black border border-slate-300 rounded text-sm text-right" placeholder="Tax %">
             </td>
             <td class="px-4 py-3 text-right ${this.type === 'receipt' ? 'hidden' : ''}">
                 <div class="flex items-center justify-end gap-1">
                     <span class="text-xs text-slate-400">Rs.</span>
-                    <input type="number" step="0.01" value="${data?.unit_price || '0.00'}" onchange="DocumentForm.calculateRow(${id})" class="w-28 px-2 py-1 bg-white text-black border border-slate-300 rounded text-sm text-right">
+                    <input type="number" step="0.01" value="${data?.unit_price || '0.00'}" onchange="DocumentForm.calculateRow(${id})" class="item-price w-28 px-2 py-1 bg-white text-black border border-slate-300 rounded text-sm text-right">
                 </div>
             </td>
             <td class="px-4 py-3 text-right font-medium text-slate-100 ${this.type === 'receipt' ? 'hidden' : ''}">
@@ -181,16 +185,19 @@ const DocumentForm = {
         const product = this.products.find(p => p.id == productId);
         if (product) {
             const row = document.getElementById(`item-${id}`);
-            const inputs = row.querySelectorAll('input');
-            const textarea = row.querySelector('textarea');
+            const nameInput = row.querySelector('.item-name');
+            const descInput = row.querySelector('.item-description');
+            const priceInput = row.querySelector('.item-price');
+            const taxInput = row.querySelector('.item-tax');
 
-            inputs[0].value = product.name;
-            textarea.value = product.description || '';
-
-            if (this.type !== 'receipt') {
-                inputs[2].value = product.unit_price || 0;
+            if (nameInput) nameInput.value = product.name;
+            if (descInput) descInput.value = product.description || '';
+            if (this.type !== 'receipt' && priceInput) {
+                priceInput.value = product.unit_price || 0;
             }
-
+            if (this.type !== 'receipt' && taxInput) {
+                taxInput.value = product.tax_rate ?? 0;
+            }
             this.calculateRow(id);
         }
     },
@@ -205,10 +212,14 @@ const DocumentForm = {
 
     calculateRow(id) {
         const row = document.getElementById(`item-${id}`);
-        const qty = parseFloat(row.querySelectorAll('input')[1].value) || 0;
-        const price = parseFloat(row.querySelectorAll('input')[2].value) || 0;
-        const total = (qty * price).toFixed(2);
-        document.getElementById(`total-${id}`).textContent = total;
+        const qty = parseFloat(row.querySelector('.item-qty')?.value) || 0;
+        const price = parseFloat(row.querySelector('.item-price')?.value) || 0;
+        const taxRate = parseFloat(row.querySelector('.item-tax')?.value) || 0;
+        const subtotal = qty * price;
+        const taxAmount = subtotal * (taxRate / 100);
+        const total = (subtotal + taxAmount).toFixed(2);
+        const totalElem = document.getElementById(`total-${id}`);
+        if (totalElem) totalElem.textContent = total;
 
         this.updateGrandTotal();
     },
@@ -228,10 +239,11 @@ const DocumentForm = {
         document.querySelectorAll('#items-body tr').forEach(row => {
             items.push({
                 product_id: row.querySelector('select').value || null,
-                item_name: row.querySelectorAll('input')[0].value,
-                description: row.querySelector('textarea').value,
-                quantity: row.querySelectorAll('input')[1].value,
-                unit_price: row.querySelectorAll('input')[2]?.value || 0
+                item_name: row.querySelector('.item-name')?.value || '',
+                description: row.querySelector('.item-description')?.value || '',
+                quantity: row.querySelector('.item-qty')?.value || 0,
+                tax_rate: row.querySelector('.item-tax')?.value || 0,
+                unit_price: row.querySelector('.item-price')?.value || 0
             });
         });
 

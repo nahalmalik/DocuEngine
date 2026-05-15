@@ -26,6 +26,26 @@ const Settings = {
                             <label class="block text-sm font-medium text-slate-300">Company Address</label>
                             <textarea id="company_address" name="company_address" rows="3" class="mt-1 block w-full rounded-md bg-slate-50 text-slate-900 border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"></textarea>
                         </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300">Bank Account Title</label>
+                            <input type="text" id="bank_account_title" name="bank_account_title" class="mt-1 block w-full rounded-md bg-slate-50 text-slate-900 border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300">Bank Account Number</label>
+                            <input type="text" id="bank_account_number" name="bank_account_number" class="mt-1 block w-full rounded-md bg-slate-50 text-slate-900 border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300">Bank Name</label>
+                            <input type="text" id="bank_name" name="bank_name" class="mt-1 block w-full rounded-md bg-slate-50 text-slate-900 border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300">Bank Branch</label>
+                            <input type="text" id="bank_branch" name="bank_branch" class="mt-1 block w-full rounded-md bg-slate-50 text-slate-900 border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300">Company NTN</label>
+                            <input type="text" id="company_ntn" name="company_ntn" class="mt-1 block w-full rounded-md bg-slate-50 text-slate-900 border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border">
+                        </div>
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-slate-300">Company Logo (Image File)</label>
                             <input type="file" id="company_logo_file" accept="image/*" class="mt-1 block w-full rounded-md bg-slate-50 text-slate-900 border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border">
@@ -66,6 +86,11 @@ const Settings = {
             if (s.company_phone) document.getElementById('company_phone').value = s.company_phone;
             if (s.company_address) document.getElementById('company_address').value = s.company_address;
             
+            if (s.bank_account_title) document.getElementById('bank_account_title').value = s.bank_account_title;
+            if (s.bank_account_number) document.getElementById('bank_account_number').value = s.bank_account_number;
+            if (s.bank_name) document.getElementById('bank_name').value = s.bank_name;
+            if (s.bank_branch) document.getElementById('bank_branch').value = s.bank_branch;
+            if (s.company_ntn) document.getElementById('company_ntn').value = s.company_ntn;
             if (s.company_logo) {
                 document.getElementById('company_logo').value = s.company_logo;
                 const preview = document.getElementById('logo_preview');
@@ -119,6 +144,11 @@ const Settings = {
                     company_email: document.getElementById('company_email').value,
                     company_phone: document.getElementById('company_phone').value,
                     company_address: document.getElementById('company_address').value,
+                    bank_account_title: document.getElementById('bank_account_title').value,
+                    bank_account_number: document.getElementById('bank_account_number').value,
+                    bank_name: document.getElementById('bank_name').value,
+                    bank_branch: document.getElementById('bank_branch').value,
+                    company_ntn: document.getElementById('company_ntn').value,
                     company_logo: document.getElementById('company_logo').value,
                     company_signature: document.getElementById('company_signature').value
                 };

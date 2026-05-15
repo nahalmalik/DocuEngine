@@ -181,7 +181,8 @@ const Documents = {
 
         // Use 'download' for mobile to trigger the Android DownloadListener we added
         const action = isMobile ? 'download' : 'view';
-        let pdfUrl = `${baseUrl}/pdf/${id}?type=${type}&token=${encodeURIComponent(token)}&action=${action}`;
+        const cacheBust = Date.now();
+        let pdfUrl = `${baseUrl}/pdf/${id}?type=${type}&token=${encodeURIComponent(token)}&action=${action}&_=${cacheBust}`;
 
         if (pdfUrl.startsWith('../')) {
             const origin = window.location.origin;

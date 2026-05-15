@@ -82,39 +82,86 @@ class PdfController {
             $signature = $this->getBase64($settings['company_signature'] ?? '');
 
             $html = '<!DOCTYPE html><html><head><meta charset="utf-8"><style>
-                body { font-family: "Helvetica", sans-serif; font-size: 13px; color: #333; }
-                .header { width: 100%; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
-                .logo { max-width: 140px; max-height: 70px; }
-                .company-details { float: right; text-align: right; }
+                body { font-family: "Helvetica", sans-serif; font-size: 13px; color: #333; position: relative; }
+                .watermark { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg); font-size: 60px; color: rgba(180,180,180,0.08); opacity: 0.08; white-space: nowrap; pointer-events: none; width: 100%; text-align: center; }
+                .header { width: 100%; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; position: relative; }
+                .logo { max-width: 240px; max-height: 100px; }
+                .company-details { float: right; text-align: right; font-size: 11px; line-height: 1.3; }
+                .company-details strong { font-size: 12px; }
                 .doc-title { text-transform: uppercase; font-size: 22px; font-weight: bold; margin-bottom: 5px; }
                 .details-table { width: 100%; margin-bottom: 20px; }
                 .details-table td { vertical-align: top; width: 50%; }
                 .items-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
                 .items-table th, .items-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
                 .items-table th { background-color: #f8f8f8; font-weight: bold; }
+                .terms-block { margin-top: 10px; font-size: 12px; }
+                .terms-block strong { display: block; margin-bottom: 5px; }
+                .pay-to-block { margin-top: 10px; padding: 10px; border: 1px solid #ddd; background: #f7f7f7; font-size: 12px; }
+                .pay-to-block strong { display: block; margin-bottom: 5px; }
                 .totals { float: right; width: 250px; }
                 .totals-table { width: 100%; border-collapse: collapse; }
                 .totals-table td { padding: 6px; text-align: right; border: 1px solid #ddd; }
                 .footer { margin-top: 40px; clear: both; }
                 .sig-img { max-width: 120px; max-height: 60px; }
-            </style></head><body>';
+            </style></head><body><div class="watermark">My System Watermark</div>';
 
             $html .= '<table class="header"><tr><td style="width: 50%">';
             if ($logo) $html .= '<img src="'.$logo.'" class="logo"><br>';
-            $html .= '<h2 style="margin:5px 0 0 0;">'.htmlspecialchars($settings['company_name'] ?? 'Your Company').'</h2></td><td class="company-details"><strong>'.htmlspecialchars($settings['company_name'] ?? '').'</strong><br>'.nl2br(htmlspecialchars($settings['company_address'] ?? '')).'<br>'.htmlspecialchars($settings['company_phone'] ?? '').'</td></tr></table>';
+            $html .= '<h2 style="margin:5px 0 0 0;">'.htmlspecialchars($settings['company_name'] ?? 'Your Company').'</h2></td><td class="company-details"><strong>'.htmlspecialchars($settings['company_name'] ?? '').'</strong><br>'.nl2br(htmlspecialchars($settings['company_address'] ?? '')).'<br>'.htmlspecialchars($settings['company_phone'] ?? '').'<br>'.htmlspecialchars($settings['company_email'] ?? '').'<br>';
+            if (!empty($settings['bank_name'])) {
+                $html .= '<strong>Bank:</strong> '.htmlspecialchars($settings['bank_name']).'<br>';
+            }
+            if (!empty($settings['bank_account_title'])) {
+                $html .= '<strong>Account Title:</strong> '.htmlspecialchars($settings['bank_account_title']).'<br>';
+            }
+            if (!empty($settings['bank_account_number'])) {
+                $html .= '<strong>Account No:</strong> '.htmlspecialchars($settings['bank_account_number']).'<br>';
+            }
+            if (!empty($settings['bank_branch'])) {
+                $html .= '<strong>Branch:</strong> '.htmlspecialchars($settings['bank_branch']).'<br>';
+            }
+            if (!empty($settings['company_ntn'])) {
+                $html .= '<strong>NTN:</strong> '.htmlspecialchars($settings['company_ntn']).'<br>';
+            }
+            $html .= '</td></tr></table>';
 
             $docTitle = ($type === 'receipt') ? 'DELIVERY CHALLAN' : strtoupper(str_replace('_', ' ', $type));
             $html .= '<table class="details-table"><tr><td><strong>Bill To:</strong><br>'.htmlspecialchars($document['customer']['company_name'] ?? '').'<br>'.nl2br(htmlspecialchars($document['customer']['billing_address'] ?? '')).'</td><td style="text-align: right;"><div class="doc-title">'.$docTitle.'</div><strong>No:</strong> '.htmlspecialchars($document['document_number']).'<br><strong>Date:</strong> '.htmlspecialchars($document['issue_date']).'</td></tr></table>';
 
             $html .= '<table class="items-table"><thead><tr><th style="width: 5%">#</th><th>Product</th><th>Description</th><th style="width: 10%">Qty</th>';
-            if ($type !== 'receipt') $html .= '<th style="width: 15%">Price (Rs.)</th><th style="width: 15%">Total (Rs.)</th>';
+            if ($type !== 'receipt') $html .= '<th style="width: 10%">Tax Rate (%)</th><th style="width: 15%">Price (Rs.)</th><th style="width: 15%">Total (Rs.)</th>';
             $html .= '</tr></thead><tbody>';
             foreach ($document['items'] as $i => $item) {
+                $taxRate = isset($item['tax_rate']) ? (float)$item['tax_rate'] : null;
+                if ($taxRate === null && isset($item['quantity'], $item['unit_price'], $item['line_total'])) {
+                    $lineSubtotal = (float)$item['quantity'] * (float)$item['unit_price'];
+                    if ($lineSubtotal > 0) {
+                        $taxRate = (($item['line_total'] - $lineSubtotal) / $lineSubtotal) * 100;
+                    }
+                }
+                $taxRate = $taxRate !== null ? (float)$taxRate : 0;
                 $html .= '<tr><td>'.($i+1).'</td><td>'.htmlspecialchars($item['item_name']).'</td><td><small>'.nl2br(htmlspecialchars($item['description'])).'</small></td><td>'.$item['quantity'].'</td>';
-                if ($type !== 'receipt') $html .= '<td>'.number_format($item['unit_price'], 2).'</td><td>'.number_format($item['line_total'], 2).'</td>';
+                if ($type !== 'receipt') {
+                    $html .= '<td>'.number_format($taxRate, 2).'%</td>';
+                    $html .= '<td>'.number_format($item['unit_price'], 2).'</td><td>'.number_format($item['line_total'], 2).'</td>';
+                }
                 $html .= '</tr>';
             }
             $html .= '</tbody></table>';
+
+            if (!empty($document['terms_conditions'])) {
+                $html .= '<div class="terms-block"><strong>Terms & Conditions:</strong>'.nl2br(htmlspecialchars($document['terms_conditions'])).'</div>';
+            }
+
+            $hasBankDetails = !empty($settings['bank_name']) || !empty($settings['bank_account_title']) || !empty($settings['bank_account_number']) || !empty($settings['bank_branch']);
+            if ($hasBankDetails) {
+                $html .= '<div class="pay-to-block"><strong>Pay To:</strong>';
+                if (!empty($settings['bank_name'])) $html .= '<br>'.htmlspecialchars($settings['bank_name']);
+                if (!empty($settings['bank_account_title'])) $html .= '<br>'.htmlspecialchars($settings['bank_account_title']);
+                if (!empty($settings['bank_account_number'])) $html .= '<br>Account No: '.htmlspecialchars($settings['bank_account_number']);
+                if (!empty($settings['bank_branch'])) $html .= '<br>'.htmlspecialchars($settings['bank_branch']);
+                $html .= '</div>';
+            }
 
             if ($type !== 'receipt') {
                 $html .= '<div class="totals"><table class="totals-table"><tr><td>Subtotal:</td><td>Rs. '.number_format($document['subtotal'], 2).'</td></tr><tr><td>Tax:</td><td>Rs. '.number_format($document['tax_total'], 2).'</td></tr><tr><td style="font-size:15px"><strong>Total:</strong></td><td style="font-size:15px"><strong>Rs. '.number_format($document['grand_total'], 2).'</strong></td></tr></table></div>';
@@ -155,6 +202,9 @@ class PdfController {
                 // Clear any potential previous output
                 if (!headers_sent()) {
                     header('Content-Type: application/pdf');
+                    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+                    header('Pragma: no-cache');
+                    header('Expires: 0');
                     header('Content-Disposition: ' . $disposition . '; filename="' . $downloadFileName . '"');
                 }
 
