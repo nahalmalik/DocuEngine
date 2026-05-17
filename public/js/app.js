@@ -12,10 +12,15 @@ const App = {
         let hash = window.location.hash || '#/';
         
         // Simple routing
-        if (!Auth.isAuthenticated() && hash !== '#/login') {
-            window.location.hash = '#/login';
-            return;
-        }
+        const isPublicRoute =
+         hash.startsWith('#/login') ||
+         hash.startsWith('#/forgot') ||
+         hash.startsWith('#/reset') ||
+         hash.startsWith('#/verify');
+        if (!Auth.isAuthenticated() && !isPublicRoute) {
+    window.location.hash = '#/login';
+    return;
+}
 
         this.container.innerHTML = '';
         this.container.className = 'flex-grow flex flex-col h-full overflow-hidden bg-slate-900';
@@ -31,6 +36,22 @@ const App = {
             case hash.startsWith('#/documents'):
                 await this.renderLayout(await Documents.render());
                 Documents.init();
+                break;
+            case hash.startsWith('#/preview'):
+                await this.renderLayout(PreviewPage.render());
+                PreviewPage.init();
+                break;
+            case hash.startsWith('#/verify'):
+                await this.renderLayout(VerifyPage.render());
+                VerifyPage.init();
+                break;
+            case hash.startsWith('#/forgot'):
+                await this.renderLayout(ForgotPage.render());
+                ForgotPage.init();
+                break;
+            case hash.startsWith('#/reset'):
+                await this.renderLayout(ResetPage.render());
+                ResetPage.init();
                 break;
             case hash.startsWith('#/customers'):
                 await this.renderLayout(await Customers.render());
@@ -52,6 +73,12 @@ const App = {
     async renderLayout(content) {
         this.container.innerHTML = `
             ${await Navbar.render()}
+            <div id="app-back-button" class="absolute top-4 left-4 z-50">
+                <button onclick="App.goBack()" class="inline-flex items-center gap-2 bg-slate-800 text-slate-200 hover:bg-slate-700 border border-slate-700 px-3 py-2 rounded-lg shadow-sm">
+                    <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 6L8 10l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Back
+                </button>
+            </div>
             <main class="flex-grow overflow-auto p-4 md:p-8 fade-in">
                 ${content}
             </main>
@@ -66,7 +93,7 @@ const App = {
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm font-medium">Install DocuEngine App</p>
+                                <p class="text-sm font-medium">Install InvoQuote App</p>
                                 <p class="text-xs opacity-90">Get the full experience with our mobile and desktop apps</p>
                             </div>
                         </div>
@@ -83,7 +110,7 @@ const App = {
                     </div>
                 </div>
                 <div class="text-center text-slate-400 text-sm font-medium py-4">
-                    <p class="text-lg font-bold text-white">DocuEngine</p>
+                    <p class="text-lg font-bold text-white">InvoQuote</p>
                     <p>Smart Invoice & Document Management System</p>
                     <p class="mt-2">&copy; 2026 | Developed by Nahal Malik</p>
                 </div>
@@ -94,6 +121,18 @@ const App = {
     renderLogin() {
         this.container.innerHTML = Login.render();
         Login.init();
+    },
+
+    goBack() {
+        try {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.hash = '#/dashboard';
+            }
+        } catch (e) {
+            window.location.hash = '#/dashboard';
+        }
     },
 
     showToast(message, type = 'success') {

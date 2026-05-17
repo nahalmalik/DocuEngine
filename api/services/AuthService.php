@@ -44,11 +44,29 @@ class AuthService {
         
         if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
             $token = $matches[1];
-            return self::validateToken($token);
+            $payloadData = self::validateToken($token);
+            if ($payloadData && isset($payloadData['user_id']) && is_numeric($payloadData['user_id'])) {
+                $db = Database::getConnection();
+                $stmt = $db->prepare('SELECT id FROM users WHERE id = :id AND deleted_at IS NULL');
+                $stmt->execute(['id' => $payloadData['user_id']]);
+                if ($stmt->fetch()) {
+                    return $payloadData;
+                }
+            }
+            return false;
         }
 
         if (isset($_GET['token'])) {
-            return self::validateToken($_GET['token']);
+            $payloadData = self::validateToken($_GET['token']);
+            if ($payloadData && isset($payloadData['user_id']) && is_numeric($payloadData['user_id'])) {
+                $db = Database::getConnection();
+                $stmt = $db->prepare('SELECT id FROM users WHERE id = :id AND deleted_at IS NULL');
+                $stmt->execute(['id' => $payloadData['user_id']]);
+                if ($stmt->fetch()) {
+                    return $payloadData;
+                }
+            }
+            return false;
         }
 
         return false;
@@ -56,7 +74,7 @@ class AuthService {
 
     public static function requireAuth() {
         $user = self::getAuthUser();
-        if (!$user) {
+        if (!$user || empty($user['user_id'])) {
             Response::error('Unauthorized', 401);
         }
         return $user;

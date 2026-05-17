@@ -21,6 +21,10 @@ class SettingController {
 
     public function update() {
         $user = AuthService::requireAuth();
+        if (empty($user['user_id']) || !is_numeric($user['user_id'])) {
+            Response::error('Unauthorized', 401);
+        }
+
         $data = json_decode(file_get_contents('php://input'), true);
         
         if (!is_array($data)) {

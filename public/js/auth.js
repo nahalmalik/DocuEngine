@@ -27,9 +27,7 @@ const Auth = {
 
     async register(name, email, password) {
         try {
-            const response = await API.post('/auth/register', { name, email, password });
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
+            await API.post('/auth/register', { name, email, password });
             return true;
         } catch (error) {
             throw error;

@@ -34,7 +34,7 @@
   },
   "build": {
   "appId": "com.quotation.system",
-  "productName": "Quotation System",
+  "productName": "InvoQuote",
   "directories": {
     "output": "dist"
   },

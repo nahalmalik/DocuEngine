@@ -20,7 +20,7 @@ const Login = {
                                 Welcome back
                             </h2>
                             <p class="mt-2 text-center text-sm text-slate-400">
-                                Sign in to <span class="text-indigo-400 font-semibold">DocuEngine</span>
+                                Sign in to <span class="text-indigo-400 font-semibold">InvoQuote</span>
                             </p>
                         </div>
                         <form id="loginForm" class="mt-8 space-y-5">
@@ -39,8 +39,9 @@ const Login = {
                                 </button>
                             </div>
                         </form>
-                        <div class="mt-6 text-center">
-                            <a href="#" id="show-register" class="text-sm text-slate-400 hover:text-white transition-colors">Don't have an account? <span class="text-indigo-400 font-medium hover:text-indigo-300">Create one</span></a>
+                        <div class="mt-4 flex justify-between items-center text-sm">
+                            <a href="#/forgot" id="forgot-link" class="text-slate-400 hover:text-white">Forgot password?</a>
+                            <a href="#" id="show-register" class="text-slate-400 hover:text-white">Don't have an account? <span class="text-indigo-400 font-medium hover:text-indigo-300">Create one</span></a>
                         </div>
                     </div>
 
@@ -54,7 +55,7 @@ const Login = {
                                 Create an account
                             </h2>
                             <p class="mt-2 text-center text-sm text-slate-400">
-                                Join <span class="text-indigo-400 font-semibold">DocuEngine</span>
+                                Join <span class="text-indigo-400 font-semibold">InvoQuote</span>
                             </p>
                         </div>
                         <form id="registerForm" class="mt-8 space-y-4">
@@ -150,10 +151,10 @@ const Login = {
             btn.innerHTML = 'Signing up...';
             btn.disabled = true;
 
-            try {
+                try {
                 await Auth.register(name, email, password);
-                App.showToast('Registration successful!');
-                window.location.hash = '#/dashboard';
+                App.showToast('Registration successful! Please check your email to verify your account');
+                window.location.hash = '#/login';
             } catch (error) {
                 App.showToast(error.message || 'Registration failed', 'error');
                 btn.innerHTML = originalText;

@@ -47,6 +47,10 @@ $router->post('/v1/auth/login', 'AuthController@login');
 $router->post('/v1/auth/register', 'AuthController@register');
 $router->post('/v1/auth/logout', 'AuthController@logout');
 $router->get('/v1/auth/check', 'AuthController@check');
+// Email verification & password reset
+$router->get('/v1/auth/verify', 'AuthController@verify');
+$router->post('/v1/auth/request-reset', 'AuthController@requestReset');
+$router->post('/v1/auth/reset', 'AuthController@reset');
 
 // Customers
 $router->get('/v1/customers', 'CustomerController@index');

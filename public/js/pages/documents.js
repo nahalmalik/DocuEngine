@@ -32,6 +32,8 @@ const Documents = {
                     </table>
                 </div>
 
+                
+
                 <div class="mt-6 pt-4 border-t border-slate-700">
                     <button onclick="window.location.hash='#/documents/create?type=${type}'" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors shadow-sm font-medium flex items-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
@@ -78,6 +80,11 @@ const Documents = {
         return type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     },
 
+    getEndpointPath(type) {
+        if (type === 'purchase_order') return 'purchase-orders';
+        return type + 's';
+    },
+
     async init() {
         const hash = window.location.hash;
         if (hash.includes('#/documents/create') || hash.includes('#/documents/edit')) {
@@ -86,11 +93,6 @@ const Documents = {
 
         const type = this.getTypeFromUrl();
         await this.loadData(type);
-    },
-
-    getEndpointPath(type) {
-        if (type === 'purchase_order') return 'purchase-orders';
-        return type + 's';
     },
 
     getDocumentNumber(doc, type) {
@@ -124,6 +126,7 @@ const Documents = {
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-400">${doc.customer?.company_name || 'N/A'}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-400">${doc.issue_date}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
+                            <button onclick="Documents.previewPdf(${doc.id}, '${type}')" class="text-sky-400 hover:text-sky-300 font-bold border border-sky-400/30 px-3 py-1 rounded">Preview PDF</button>
                             <button onclick="Documents.downloadPdf(${doc.id}, '${type}')" class="text-indigo-400 hover:text-indigo-300 font-bold border border-indigo-400/30 px-3 py-1 rounded">Download PDF</button>
                             <button onclick="Documents.openShareModal(${doc.id}, '${type}')" class="text-green-500 hover:text-green-400 font-medium">Share</button>
                             <a href="#/documents/edit/${doc.id}?type=${type}" class="text-blue-400 hover:text-blue-300 font-medium">Update</a>
@@ -174,13 +177,17 @@ const Documents = {
         };
     },
 
+    previewPdf(id, type) {
+        // Navigate to the dedicated preview page
+        window.location.hash = `#/preview?id=${id}&type=${type}`;
+    },
+
     downloadPdf(id, type) {
         const token = localStorage.getItem('token');
         const baseUrl = API.getBaseUrl();
         const isMobile = API.isCapacitor;
 
-        // Use 'download' for mobile to trigger the Android DownloadListener we added
-        const action = isMobile ? 'download' : 'view';
+        const action = 'download';
         const cacheBust = Date.now();
         let pdfUrl = `${baseUrl}/pdf/${id}?type=${type}&token=${encodeURIComponent(token)}&action=${action}&_=${cacheBust}`;
 

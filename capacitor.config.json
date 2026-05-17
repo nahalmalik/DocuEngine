@@ -1,6 +1,6 @@
 {
   "appId": "com.example.app",
-  "appName": "DocuEngine",
+  "appName": "InvoQuote",
   "webDir": "public",
   "server": {
     "androidScheme": "http",

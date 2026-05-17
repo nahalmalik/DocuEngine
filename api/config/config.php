@@ -17,6 +17,14 @@ define('DB_USER', 'root');
 define('DB_PASS', '');
 define('DB_NAME', 'document_engine');
 
+// SMTP Email Configuration
+define('SMTP_HOST', 'smtp.gmail.com');
+define('SMTP_PORT', 587);
+define('SMTP_USER', 'nahalimran2001@gmail.com');
+define('SMTP_PASS', 'hhpzlhmyrrbgzvok');
+define('SMTP_FROM', 'nahalimran2001@gmail.com');
+define('SMTP_ENCRYPTION', 'tls');
+
 // JWT Secret Key
 define('JWT_SECRET', 'your_super_secret_key_change_in_production');
 

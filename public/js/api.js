@@ -9,10 +9,13 @@ const API = {
     // Base URL configuration
     getBaseUrl() {
         if (window.location.protocol === 'file:') {
-            // When opening the app directly from the file system, use the local XAMPP server.
             return 'http://localhost/quotation-system/api/v1';
         }
-        // Use local API for browser development and remote API only for Capacitor/native builds.
+
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            return `${window.location.origin}/quotation-system/api/v1`;
+        }
+
         return this.isCapacitor ? 'http://docu.bizhubpakistan.com/api/v1' : '../api/v1';
     },
 
