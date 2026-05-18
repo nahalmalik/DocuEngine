@@ -76,7 +76,7 @@ class AuthController {
             $verifyToken = bin2hex(random_bytes(16));
             $userModel->setVerifyToken($userId, $verifyToken);
 
-            $verifyUrl = BASE_URL . '/#/verify?token=' . urlencode($verifyToken);
+            $verifyUrl = BASE_URL . '/public/#/verify?token=' . urlencode($verifyToken);
             $subject = APP_NAME . ' - Verify Your Email';
             $message = "Hello,\n\nPlease verify your email by clicking the link below:\n" . $verifyUrl . "\n\nIf you did not register, please ignore this email.\n";
             MailService::send($data['email'], $subject, $message, false);
@@ -111,7 +111,7 @@ class AuthController {
         $expires = date('Y-m-d H:i:s', time() + 3600); // 1 hour
         $userModel->setResetToken($user['id'], $token, $expires);
 
-        $resetUrl = BASE_URL . '/#/reset?token=' . urlencode($token);
+        $resetUrl = BASE_URL . '/public/#/reset?token=' . urlencode($token);
         $subject = APP_NAME . ' - Password Reset';
         $message = "Hello,\n\nTo reset your password click the link below:\n" . $resetUrl . "\n\nThis link will expire in 1 hour.\n";
         MailService::send($data['email'], $subject, $message, false);

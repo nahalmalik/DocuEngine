@@ -65,6 +65,10 @@ const App = {
                 await this.renderLayout(await Settings.render());
                 Settings.init();
                 break;
+            case hash.startsWith('#/contact'):
+                await this.renderLayout(await ContactPage.render());
+                ContactPage.init();
+                break;
             default:
                 await this.renderLayout('<div class="p-8 text-center"><h1 class="text-2xl">404 - Page Not Found</h1></div>');
         }

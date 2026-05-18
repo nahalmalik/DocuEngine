@@ -105,6 +105,10 @@ $router->get('/v1/dashboard/stats', 'DashboardController@stats');
 $router->get('/v1/settings', 'SettingController@index');
 $router->post('/v1/settings', 'SettingController@update');
 
+
+// Contact
+$router->post('/v1/contact/send', 'ContactController@send');
+
 // Dispatch
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = $_SERVER['REQUEST_URI'];

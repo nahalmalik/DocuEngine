@@ -59,7 +59,23 @@ const Dashboard = {
                         <h2 class="text-xl font-bold text-slate-100">Settings</h2>
                     </a>
 
+                    <a href="#/contact" class="bg-slate-800 p-6 rounded-xl shadow border border-slate-700 flex flex-col items-center justify-center space-y-4 hover:shadow-lg hover:border-pink-300 transition-all cursor-pointer group">
+
+    <div class="p-4 rounded-full bg-pink-50 text-pink-600 group-hover:bg-pink-100 group-hover:scale-110 transition-transform">
+
+        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 8l7.89 4.95a2 2 0 002.22 0L21 8m-18 8h18a2 2 0 002-2V8a2 2 0 00-2-2H3a2 2 0 00-2 2v6a2 2 0 002 2z"/>
+        </svg>
+
+    </div>
+
+    <h2 class="text-xl font-bold text-slate-100">Contact Us</h2>
+
+</a>
+
                 </div>
+                  
             </div>
         `;
     },

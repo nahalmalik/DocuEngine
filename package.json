@@ -1,5 +1,5 @@
 {
-  "name": "quotation-system",
+  "name": "invoquote",
   "version": "1.0.0",
   "description": "Smart Invoice & Document Management System",
   "main": "main.js",
@@ -39,11 +39,13 @@
     "output": "dist"
   },
   "win": {
-    "target": "nsis"
+    "target": "nsis",
+    "icon": "build/icon.ico"
   },
   "nsis": {
     "oneClick": false,
-    "allowToChangeInstallationDirectory": true
+    "allowToChangeInstallationDirectory": true,
+    "installerName": "InvoQuote Setup"
   }
 },
   "homepage": "https://github.com/nahalmalik/DocuEngine#readme"

@@ -1,6 +1,6 @@
 {
-    "name": "document-engine/app",
-    "description": "Quotation Invoice Management System",
+    "name": "invoquote/app",
+    "description": "Smart Invoice & Document Management System",
     "type": "project",
     "require": {
         "php": ">=8.0",
