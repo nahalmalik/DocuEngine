@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Color (Brand Red) -->
+    <color name="colorPrimary">#E50914</color>
+    <color name="colorPrimaryVariant">#FF2E2E</color>
+    <color name="colorAccent">#E50914</color>
+
+    <!-- SaaS Palette -->
+    <color name="brandRed">#E50914</color>
+    <color name="brandRedHover">#FF2E2E</color>
+    <color name="primaryDark">#0F0F10</color>
+    <color name="secondaryDarkSurface">#1A1A1D</color>
+    <color name="backgroundMain">#F5F6F8</color>
+    <color name="cardBackground">#FFFFFF</color>
+    <color name="textPrimary">#111827</color>
+    <color name="textSecondary">#6B7280</color>
+    <color name="borderDivider">#E5E7EB</color>
+
+    <!-- Utils -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+</resources>

@@ -25,7 +25,7 @@ const Navbar = {
                     companyName = this.settingsCache.company_name;
                 }
                 if (this.settingsCache.company_logo) {
-                    logoHtml = `<img src="${this.settingsCache.company_logo}" alt="Logo" class="h-8 w-auto max-w-[150px] object-contain bg-slate-800 rounded p-1">`;
+                    logoHtml = `<img src="${this.settingsCache.company_logo}" alt="Logo" class="h-8 w-auto max-w-[150px] object-contain bg-white/10 rounded p-1">`;
                 }
             } catch (e) {
                 console.error("Failed to load settings for navbar", e);
@@ -33,22 +33,22 @@ const Navbar = {
         }
 
         return `
-            <nav class="bg-slate-800 border-b border-slate-700 text-slate-100 shadow-md">
+            <nav class="bg-brand-dark border-b border-white/5 text-white shadow-xl sticky top-0 z-40">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex items-center justify-between h-16">
                         <div class="flex items-center">
-                            <div class="flex-shrink-0 font-bold text-xl tracking-wider flex items-center gap-3 text-indigo-400">
+                            <div class="flex-shrink-0 font-black text-xl tracking-tighter flex items-center gap-3 text-brand-red">
                                 ${logoHtml}
                                 <span class="hidden sm:inline text-white">${companyName}</span>
                             </div>
                             <div class="ml-4 sm:ml-10 flex items-baseline space-x-2 sm:space-x-4">
-                                <a href="#/dashboard" class="px-2 sm:px-3 py-2 rounded-md text-xs sm:text-sm font-medium hover:bg-slate-700 transition-colors">Dashboard</a>
-                                <a href="#/settings" class="px-2 sm:px-3 py-2 rounded-md text-xs sm:text-sm font-medium hover:bg-slate-700 transition-colors">Settings</a>
+                                <a href="#/dashboard" class="px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm font-bold hover:bg-white/10 transition-all border border-transparent hover:border-white/5">Dashboard</a>
+                                <a href="#/settings" class="px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm font-bold hover:bg-white/10 transition-all border border-transparent hover:border-white/5">Settings</a>
                             </div>
                         </div>
                         <div class="flex items-center ml-2 space-x-2">
-                            <span class="hidden lg:inline mr-4 text-sm text-slate-300">${user ? user.name : ''}</span>
-                            <button onclick="Auth.logout()" class="px-2 sm:px-3 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium bg-slate-700 hover:bg-slate-600 border border-slate-600 transition-colors">Logout</button>
+                            <span class="hidden lg:inline mr-4 text-xs font-semibold text-slate-400 uppercase tracking-widest">${user ? user.name : ''}</span>
+                            <button onclick="Auth.logout()" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-bold bg-white/5 hover:bg-brand-red hover:text-white border border-white/10 transition-all shadow-sm">Logout</button>
                         </div>
                     </div>
                 </div>

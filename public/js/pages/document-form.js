@@ -23,55 +23,61 @@ const DocumentForm = {
         const title = this.type === 'receipt' ? 'Delivery Challan' : this.type.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
         return `
-            <div class="max-w-7xl mx-auto space-y-6 fade-in">
-                <div class="bg-slate-800 rounded-xl shadow-sm border border-slate-700 overflow-hidden">
-                    <div class="px-6 py-4 border-b border-slate-700 bg-slate-900/50 flex justify-between items-center">
-                        <h2 class="text-xl font-bold text-slate-100">${this.documentId ? 'Edit' : 'Create'} ${title}</h2>
-                        <button onclick="window.location.hash='#/documents?type=${this.type}'" class="text-slate-400 hover:text-slate-300">Cancel</button>
+            <div class="max-w-7xl mx-auto space-y-6 fade-in p-6">
+                <div class="bg-card rounded-2xl shadow-xl border border-borderDivider overflow-hidden">
+                    <div class="px-8 py-6 border-b border-borderDivider bg-brand-dark text-white flex justify-between items-center">
+                        <h2 class="text-2xl font-black tracking-tight">${this.documentId ? 'Edit' : 'Create'} ${title}</h2>
+                        <button onclick="window.location.hash='#/documents?type=${this.type}'" class="text-white/70 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-all">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                        </button>
                     </div>
 
-                    <form id="doc-form" class="p-6 space-y-8" onsubmit="DocumentForm.save(event)">
+                    <form id="doc-form" class="p-8 space-y-10" onsubmit="DocumentForm.save(event)">
                         <!-- Basic Info -->
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div>
-                                <label class="block text-sm font-medium text-slate-300 mb-1">Customer <span class="text-red-500">*</span></label>
-                                <select id="doc-customer" required class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                            <div class="space-y-2">
+                                <label class="block text-xs font-black text-textSecondary uppercase tracking-widest">Customer <span class="text-brand-red">*</span></label>
+                                <select id="doc-customer" required class="w-full px-4 py-3 bg-bgMain text-textPrimary border border-borderDivider rounded-xl focus:ring-2 focus:ring-brand-red outline-none transition-all font-semibold">
                                     <option value="">Select Customer</option>
                                 </select>
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium text-slate-300 mb-1">Issue Date <span class="text-red-500">*</span></label>
-                                <input type="date" id="doc-date" required class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                            <div class="space-y-2 ${this.type === 'invoice' || this.type === 'receipt' ? '' : 'hidden'}">
+                                <label class="block text-xs font-black text-textSecondary uppercase tracking-widest">PO Number ${this.type === 'invoice' ? '<span class="text-brand-red">*</span>' : ''}</label>
+                                <input type="text" id="doc-po-number" ${this.type === 'invoice' ? 'required' : ''} class="w-full px-4 py-3 bg-bgMain text-textPrimary border border-borderDivider rounded-xl focus:ring-2 focus:ring-brand-red outline-none transition-all font-semibold" placeholder="${this.type === 'invoice' ? 'Required PO No.' : 'Optional PO No.'}">
                             </div>
-                            <div class="${this.type === 'quotation' || this.type === 'receipt' ? 'hidden' : ''}">
-                                <label class="block text-sm font-medium text-slate-300 mb-1">Due Date</label>
-                                <input type="date" id="doc-due-date" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                            <div class="space-y-2">
+                                <label class="block text-xs font-black text-textSecondary uppercase tracking-widest">Issue Date <span class="text-brand-red">*</span></label>
+                                <input type="date" id="doc-date" required class="w-full px-4 py-3 bg-bgMain text-textPrimary border border-borderDivider rounded-xl focus:ring-2 focus:ring-brand-red outline-none transition-all font-semibold">
+                            </div>
+                            <div class="space-y-2 ${this.type === 'invoice' ? '' : 'hidden'}">
+                                <label class="block text-xs font-black text-textSecondary uppercase tracking-widest">Due Date</label>
+                                <input type="date" id="doc-due-date" class="w-full px-4 py-3 bg-bgMain text-textPrimary border border-borderDivider rounded-xl focus:ring-2 focus:ring-brand-red outline-none transition-all font-semibold">
                             </div>
                         </div>
 
                         <!-- Items Table -->
-                        <div class="border-t border-slate-700 pt-6">
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="text-lg font-bold text-slate-100">Line Items</h3>
-                                <button type="button" onclick="DocumentForm.addItem()" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 text-sm">Add Item</button>
+                        <div class="space-y-6">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-black text-textPrimary tracking-tight">Line Items</h3>
+                                <button type="button" onclick="DocumentForm.addItem()" class="px-6 py-2.5 bg-brand-dark text-white rounded-xl hover:bg-brand-red transition-all text-sm font-bold shadow-sm">Add New Item</button>
                             </div>
-                            <div class="overflow-x-auto">
-                                <table class="min-w-full divide-y divide-slate-700">
-                                    <thead class="bg-slate-900/30">
+                            <div class="overflow-hidden rounded-2xl border border-borderDivider">
+                                <table class="min-w-full divide-y divide-borderDivider">
+                                    <thead class="bg-bgMain">
                                         <tr>
-                                            <th class="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase">Item Name / Description</th>
-                                            <th class="px-4 py-3 text-center text-xs font-medium text-slate-400 uppercase w-24">Qty</th>
-                                            <th class="px-4 py-3 text-right text-xs font-medium text-slate-400 uppercase w-24 ${this.type === 'receipt' ? 'hidden' : ''}">Tax %</th>
-                                            <th class="px-4 py-3 text-right text-xs font-medium text-slate-400 uppercase w-32 ${this.type === 'receipt' ? 'hidden' : ''}">Price</th>
-                                            <th class="px-4 py-3 text-right text-xs font-medium text-slate-400 uppercase w-32 ${this.type === 'receipt' ? 'hidden' : ''}">Total</th>
-                                            <th class="px-4 py-3 text-center text-xs font-medium text-slate-400 uppercase w-16"></th>
+                                            <th class="px-6 py-4 text-left text-xs font-black text-textSecondary uppercase tracking-widest">Item Details</th>
+                                            <th class="px-6 py-4 text-center text-xs font-black text-textSecondary uppercase tracking-widest w-24">Qty</th>
+                                            <th class="px-6 py-4 text-right text-xs font-black text-textSecondary uppercase tracking-widest w-24 ${this.type === 'receipt' ? 'hidden' : ''}">Tax %</th>
+                                            <th class="px-6 py-4 text-right text-xs font-black text-textSecondary uppercase tracking-widest w-40 ${this.type === 'receipt' ? 'hidden' : ''}">Unit Price</th>
+                                            <th class="px-6 py-4 text-right text-xs font-black text-textSecondary uppercase tracking-widest w-40 ${this.type === 'receipt' ? 'hidden' : ''}">Line Total</th>
+                                            <th class="px-6 py-4 text-center w-16"></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="items-body" class="divide-y divide-slate-700"></tbody>
-                                    <tfoot class="${this.type === 'receipt' ? 'hidden' : ''}">
+                                    <tbody id="items-body" class="divide-y divide-borderDivider bg-white"></tbody>
+                                    <tfoot class="${this.type === 'receipt' ? 'hidden' : ''} bg-bgMain/50">
                                         <tr>
-                                            <td colspan="4" class="px-4 py-4 text-right text-sm font-bold text-slate-300">Grand Total:</td>
-                                            <td class="px-4 py-4 text-right text-lg font-bold text-indigo-400">
+                                            <td colspan="4" class="px-6 py-6 text-right text-sm font-black text-textSecondary uppercase tracking-widest">Grand Total:</td>
+                                            <td class="px-6 py-6 text-right text-2xl font-black text-brand-red">
                                                 Rs. <span id="grand-total">0.00</span>
                                             </td>
                                             <td></td>
@@ -82,20 +88,20 @@ const DocumentForm = {
                         </div>
 
                         <!-- Notes and Terms -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-slate-700 pt-6">
-                            <div>
-                                <label class="block text-sm font-medium text-slate-300 mb-1">Notes</label>
-                                <textarea id="doc-notes" rows="4" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg outline-none"></textarea>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                            <div class="space-y-2">
+                                <label class="block text-xs font-black text-textSecondary uppercase tracking-widest">Notes</label>
+                                <textarea id="doc-notes" rows="4" class="w-full px-4 py-3 bg-bgMain text-textPrimary border border-borderDivider rounded-xl outline-none focus:ring-2 focus:ring-brand-red transition-all font-semibold"></textarea>
                             </div>
-                            <div class="${this.type === 'purchase_order' ? 'hidden' : ''}">
-                                <label class="block text-sm font-medium text-slate-300 mb-1">Terms & Conditions</label>
-                                <textarea id="doc-terms" rows="4" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg outline-none"></textarea>
+                            <div class="space-y-2 ${this.type === 'purchase_order' ? 'hidden' : ''}">
+                                <label class="block text-xs font-black text-textSecondary uppercase tracking-widest">Terms & Conditions</label>
+                                <textarea id="doc-terms" rows="4" class="w-full px-4 py-3 bg-bgMain text-textPrimary border border-borderDivider rounded-xl outline-none focus:ring-2 focus:ring-brand-red transition-all font-semibold"></textarea>
                             </div>
                         </div>
 
                         <!-- Footer Actions -->
-                        <div class="flex justify-end pt-6 border-t border-slate-700">
-                            <button type="submit" class="px-10 py-3 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 shadow-lg">
+                        <div class="flex justify-end pt-10 border-t border-borderDivider">
+                            <button type="submit" class="px-12 py-4 bg-brand-red text-white rounded-2xl font-black uppercase tracking-widest hover:bg-brand-redHover transition-all shadow-xl shadow-brand-red/20 transform hover:-translate-y-1">
                                 ${this.documentId ? 'Update' : 'Save'} ${title}
                             </button>
                         </div>
@@ -126,6 +132,7 @@ const DocumentForm = {
             const doc = res.data;
             document.getElementById('doc-customer').value = doc.customer_id;
             document.getElementById('doc-date').value = doc.issue_date;
+            if (document.getElementById('doc-po-number')) document.getElementById('doc-po-number').value = doc.po_number || '';
             if (document.getElementById('doc-due-date')) document.getElementById('doc-due-date').value = doc.due_date || '';
             document.getElementById('doc-notes').value = doc.notes || '';
             if (document.getElementById('doc-terms')) document.getElementById('doc-terms').value = doc.terms_conditions || '';
@@ -148,32 +155,32 @@ const DocumentForm = {
         });
 
         row.innerHTML = `
-            <td class="px-4 py-3">
-                <select onchange="DocumentForm.onProductChange(${id}, this.value)" class="item-product w-full mb-1 px-3 py-1 bg-white text-black border border-slate-300 rounded text-sm outline-none">
+            <td class="px-6 py-4 space-y-2">
+                <select onchange="DocumentForm.onProductChange(${id}, this.value)" class="item-product w-full px-3 py-2 bg-bgMain text-textPrimary border border-borderDivider rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-red font-semibold transition-all">
                     ${productOptions}
                 </select>
-                <input type="text" placeholder="Item Name" value="${data?.item_name || ''}" class="item-name w-full mb-1 px-3 py-1 bg-white text-black border border-slate-300 rounded text-sm outline-none">
-                <textarea placeholder="Description" class="item-description w-full px-3 py-1 bg-white text-black border border-slate-300 rounded text-xs outline-none">${data?.description || ''}</textarea>
+                <input type="text" placeholder="Item Name" value="${data?.item_name || ''}" class="item-name w-full px-3 py-2 bg-white text-textPrimary border border-borderDivider rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-red font-bold transition-all">
+                <textarea placeholder="Description" class="item-description w-full px-3 py-2 bg-white text-textSecondary border border-borderDivider rounded-lg text-xs outline-none focus:ring-2 focus:ring-brand-red transition-all">${data?.description || ''}</textarea>
             </td>
-            <td class="px-4 py-3 text-center">
-                <input type="number" step="0.01" value="${data?.quantity || '1.00'}" onchange="DocumentForm.calculateRow(${id})" class="item-qty w-20 px-2 py-1 bg-white text-black border border-slate-300 rounded text-sm text-center">
+            <td class="px-6 py-4 text-center">
+                <input type="number" step="0.01" value="${data?.quantity || '1.00'}" onchange="DocumentForm.calculateRow(${id})" class="item-qty w-20 px-2 py-2 bg-white text-textPrimary border border-borderDivider rounded-lg text-sm text-center font-bold focus:ring-2 focus:ring-brand-red">
             </td>
-            <td class="px-4 py-3 text-right ${this.type === 'receipt' ? 'hidden' : ''}">
-                <input type="number" step="0.01" value="${data?.tax_rate ?? '0.00'}" onchange="DocumentForm.calculateRow(${id})" class="item-tax w-20 px-2 py-1 bg-white text-black border border-slate-300 rounded text-sm text-right" placeholder="Tax %">
+            <td class="px-6 py-4 text-right ${this.type === 'receipt' ? 'hidden' : ''}">
+                <input type="number" step="0.01" value="${data?.tax_rate ?? '0.00'}" onchange="DocumentForm.calculateRow(${id})" class="item-tax w-20 px-2 py-2 bg-white text-textPrimary border border-borderDivider rounded-lg text-sm text-right font-bold focus:ring-2 focus:ring-brand-red" placeholder="Tax %">
             </td>
-            <td class="px-4 py-3 text-right ${this.type === 'receipt' ? 'hidden' : ''}">
+            <td class="px-6 py-4 text-right ${this.type === 'receipt' ? 'hidden' : ''}">
                 <div class="flex items-center justify-end gap-1">
-                    <span class="text-xs text-slate-400">Rs.</span>
-                    <input type="number" step="0.01" value="${data?.unit_price || '0.00'}" onchange="DocumentForm.calculateRow(${id})" class="item-price w-28 px-2 py-1 bg-white text-black border border-slate-300 rounded text-sm text-right">
+                    <span class="text-xs font-bold text-textSecondary">Rs.</span>
+                    <input type="number" step="0.01" value="${data?.unit_price || '0.00'}" onchange="DocumentForm.calculateRow(${id})" class="item-price w-32 px-2 py-2 bg-white text-textPrimary border border-borderDivider rounded-lg text-sm text-right font-bold focus:ring-2 focus:ring-brand-red">
                 </div>
             </td>
-            <td class="px-4 py-3 text-right font-medium text-slate-100 ${this.type === 'receipt' ? 'hidden' : ''}">
-                <span class="text-xs text-slate-400">Rs.</span>
+            <td class="px-6 py-4 text-right font-black text-textPrimary ${this.type === 'receipt' ? 'hidden' : ''}">
+                <span class="text-xs text-textSecondary mr-1">Rs.</span>
                 <span id="total-${id}">${data?.line_total || '0.00'}</span>
             </td>
-            <td class="px-4 py-3 text-center">
-                <button type="button" onclick="DocumentForm.removeItem(${id})" class="text-red-400 hover:text-red-600">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+            <td class="px-6 py-4 text-center">
+                <button type="button" onclick="DocumentForm.removeItem(${id})" class="text-brand-red hover:text-brand-redHover p-2 hover:bg-brand-red/10 rounded-full transition-all">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                 </button>
             </td>
         `;
@@ -250,6 +257,7 @@ const DocumentForm = {
         const data = {
             customer_id: document.getElementById('doc-customer').value,
             issue_date: document.getElementById('doc-date').value,
+            po_number: document.getElementById('doc-po-number')?.value || null,
             due_date: document.getElementById('doc-due-date')?.value || null,
             notes: document.getElementById('doc-notes').value,
             terms_conditions: document.getElementById('doc-terms')?.value || null,

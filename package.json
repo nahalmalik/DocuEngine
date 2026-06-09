@@ -33,20 +33,23 @@
     "url": "https://github.com/nahalmalik/DocuEngine/issues"
   },
   "build": {
-  "appId": "com.quotation.system",
+  "appId": "com.ibzi.invoquote",
   "productName": "InvoQuote",
   "directories": {
     "output": "dist"
   },
   "win": {
-    "target": "nsis",
-    "icon": "build/icon.ico"
-  },
+  "target": "nsis",
+  "icon": "build/icon.ico",
+  "artifactName": "InvoQuote-Setup-${version}.${ext}"
+},
   "nsis": {
-    "oneClick": false,
-    "allowToChangeInstallationDirectory": true,
-    "installerName": "InvoQuote Setup"
-  }
+  "oneClick": false,
+  "allowToChangeInstallationDirectory": true,
+  "createDesktopShortcut": true,
+  "createStartMenuShortcut": true,
+  "shortcutName": "InvoQuote"
+}
 },
   "homepage": "https://github.com/nahalmalik/DocuEngine#readme"
   

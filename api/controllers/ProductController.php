@@ -29,32 +29,50 @@ class ProductController {
     }
 
     public function create() {
-        $user = AuthService::getAuthUser();
-        $data = json_decode(file_get_contents('php://input'), true);
-        if (empty($data['name'])) {
-            Response::error('Product name is required', 400);
-        }
+        try {
+            $user = AuthService::getAuthUser();
+            $data = json_decode(file_get_contents('php://input'), true);
+            if (empty($data['name'])) {
+                Response::error('Product name is required', 400);
+            }
 
-        $id = $this->productModel->create($data, $user['user_id']);
-        $product = $this->productModel->getById($id, $user['user_id']);
-        Response::success($product, 201);
+            $id = $this->productModel->create($data, $user['user_id']);
+            $product = $this->productModel->getById($id, $user['user_id']);
+            Response::success($product, 201);
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) { // Integrity constraint violation
+                Response::error('Product SKU already exists. Please use a unique SKU.', 409);
+            }
+            Response::error('Database error: ' . $e->getMessage(), 500);
+        } catch (Exception $e) {
+            Response::error($e->getMessage(), 500);
+        }
     }
 
     public function update($id) {
-        $user = AuthService::getAuthUser();
-        $data = json_decode(file_get_contents('php://input'), true);
-        if (empty($data['name'])) {
-            Response::error('Product name is required', 400);
-        }
+        try {
+            $user = AuthService::getAuthUser();
+            $data = json_decode(file_get_contents('php://input'), true);
+            if (empty($data['name'])) {
+                Response::error('Product name is required', 400);
+            }
 
-        $existing = $this->productModel->getById($id, $user['user_id']);
-        if (!$existing) {
-            Response::error('Product not found', 404);
-        }
+            $existing = $this->productModel->getById($id, $user['user_id']);
+            if (!$existing) {
+                Response::error('Product not found', 404);
+            }
 
-        $this->productModel->update($id, $data, $user['user_id']);
-        $product = $this->productModel->getById($id, $user['user_id']);
-        Response::success($product);
+            $this->productModel->update($id, $data, $user['user_id']);
+            $product = $this->productModel->getById($id, $user['user_id']);
+            Response::success($product);
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) {
+                Response::error('Product SKU already exists. Please use a unique SKU.', 409);
+            }
+            Response::error('Database error: ' . $e->getMessage(), 500);
+        } catch (Exception $e) {
+            Response::error($e->getMessage(), 500);
+        }
     }
 
     public function delete($id) {

@@ -23,7 +23,7 @@ const App = {
 }
 
         this.container.innerHTML = '';
-        this.container.className = 'flex-grow flex flex-col h-full overflow-hidden bg-slate-900';
+        this.container.className = 'flex-grow flex flex-col h-full overflow-hidden bg-bgMain';
 
         switch (true) {
             case hash === '#/login':
@@ -78,7 +78,7 @@ const App = {
         this.container.innerHTML = `
             ${await Navbar.render()}
             <div id="app-back-button" class="absolute top-4 left-4 z-50">
-                <button onclick="App.goBack()" class="inline-flex items-center gap-2 bg-slate-800 text-slate-200 hover:bg-slate-700 border border-slate-700 px-3 py-2 rounded-lg shadow-sm">
+                <button onclick="App.goBack()" class="inline-flex items-center gap-2 bg-white text-textPrimary hover:bg-bgMain border border-borderDivider px-3 py-2 rounded-lg shadow-sm transition-colors">
                     <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 6L8 10l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     Back
                 </button>
@@ -86,9 +86,9 @@ const App = {
             <main class="flex-grow overflow-auto p-4 md:p-8 fade-in">
                 ${content}
             </main>
-            <footer class="bg-slate-900 border-t border-slate-800 mt-auto">
+            <footer class="bg-brand-dark border-t border-white/5 mt-auto">
                 <!-- Install App Banner -->
-                <div id="install-banner" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 px-4">
+                <div id="install-banner" class="bg-brand-red text-white py-3 px-4 shadow-lg">
                     <div class="flex items-center justify-between max-w-7xl mx-auto">
                         <div class="flex items-center space-x-3">
                             <div class="flex-shrink-0">
@@ -97,12 +97,12 @@ const App = {
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm font-medium">Install InvoQuote App</p>
+                                <p class="text-sm font-bold">Install InvoQuote App</p>
                                 <p class="text-xs opacity-90">Get the full experience with our mobile and desktop apps</p>
                             </div>
                         </div>
                         <div class="flex items-center space-x-2">
-                            <button onclick="App.showInstallPopup()" class="bg-white text-indigo-600 px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-gray-100 transition-colors">
+                            <button onclick="App.showInstallPopup()" class="bg-white text-brand-red px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-gray-100 transition-colors shadow-sm">
                                 Install Now
                             </button>
                             <button onclick="App.hideInstallBanner()" class="text-white opacity-70 hover:opacity-100 p-1">
@@ -113,10 +113,11 @@ const App = {
                         </div>
                     </div>
                 </div>
-                <div class="text-center text-slate-400 text-sm font-medium py-4">
-                    <p class="text-lg font-bold text-white">InvoQuote</p>
-                    <p>Smart Invoice & Document Management System</p>
-                    <p class="mt-2">&copy; 2026 | Developed by Nahal Malik</p>
+                <div class="max-w-7xl mx-auto px-4 py-8 flex flex-col items-center">
+                    <p class="text-xl font-black text-white tracking-tighter">InvoQuote</p>
+                    <p class="text-slate-400 text-sm font-medium">Smart Invoice & Document Management System</p>
+                    <div class="w-12 h-1 bg-brand-red rounded-full my-4"></div>
+                    <p class="text-slate-500 text-xs">&copy; 2026 | Developed by DeviQo Software Options</p>
                 </div>
             </footer>
         `;

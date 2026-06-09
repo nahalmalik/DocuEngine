@@ -29,28 +29,40 @@ class PurchaseOrderController {
     }
 
     public function create() {
-        $user = AuthService::getAuthUser();
-        $data = json_decode(file_get_contents('php://input'), true);
-        
-        if (empty($data['customer_id']) || empty($data['issue_date'])) {
-            Response::error('Customer/Supplier and Issue Date are required', 400);
-        }
+        try {
+            $user = AuthService::getAuthUser();
+            $data = json_decode(file_get_contents('php://input'), true);
 
-        $doc = $this->service->create($data, $user['user_id']);
-        Response::success($doc, 201);
+            if (empty($data['customer_id']) || empty($data['issue_date'])) {
+                Response::error('Customer/Supplier and Issue Date are required', 400);
+            }
+
+            $doc = $this->service->create($data, $user['user_id']);
+            Response::success($doc, 201);
+        } catch (PDOException $e) {
+            Response::error('Database error: ' . $e->getMessage(), 500);
+        } catch (Exception $e) {
+            Response::error($e->getMessage(), 500);
+        }
     }
 
     public function update($id) {
-        $user = AuthService::getAuthUser();
-        $data = json_decode(file_get_contents('php://input'), true);
-        
-        $existing = $this->service->getById($id, $user['user_id']);
-        if (!$existing) {
-            Response::error('Purchase Order not found', 404);
-        }
+        try {
+            $user = AuthService::getAuthUser();
+            $data = json_decode(file_get_contents('php://input'), true);
 
-        $doc = $this->service->update($id, $data, $user['user_id']);
-        Response::success($doc);
+            $existing = $this->service->getById($id, $user['user_id']);
+            if (!$existing) {
+                Response::error('Purchase Order not found', 404);
+            }
+
+            $doc = $this->service->update($id, $data, $user['user_id']);
+            Response::success($doc);
+        } catch (PDOException $e) {
+            Response::error('Database error: ' . $e->getMessage(), 500);
+        } catch (Exception $e) {
+            Response::error($e->getMessage(), 500);
+        }
     }
 
     public function delete($id) {

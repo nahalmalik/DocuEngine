@@ -8,22 +8,22 @@
     <!-- Add Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; }
-        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        body { font-family: 'Inter', sans-serif; background-color: #F5F6F8; }
+        .glass-panel { background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 12px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); }
         .fade-in { animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        /* Custom scrollbar for dark theme */
+        /* Custom scrollbar for SaaS theme */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
-        /* Inputs autofill fix for dark theme */
+        ::-webkit-scrollbar-track { background: #F5F6F8; }
+        ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9CA3AF; }
+        /* Inputs autofill fix */
         input:-webkit-autofill,
         input:-webkit-autofill:hover, 
         input:-webkit-autofill:focus, 
         input:-webkit-autofill:active{
-            -webkit-box-shadow: 0 0 0 30px #1e293b inset !important;
-            -webkit-text-fill-color: white !important;
+            -webkit-box-shadow: 0 0 0 30px white inset !important;
+            -webkit-text-fill-color: #111827 !important;
         }
     </style>
     <script>
@@ -32,18 +32,26 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#6366f1',
-                        secondary: '#14b8a6',
-                        dark: '#0f172a',
-                        darker: '#020617',
-                        card: '#1e293b'
+                        brand: {
+                            red: '#E50914',
+                            redHover: '#FF2E2E',
+                            dark: '#0F0F10',
+                            darkSurface: '#1A1A1D'
+                        },
+                        primary: '#E50914',
+                        secondary: '#0F0F10',
+                        bgMain: '#F5F6F8',
+                        card: '#FFFFFF',
+                        textPrimary: '#111827',
+                        textSecondary: '#6B7280',
+                        borderDivider: '#E5E7EB'
                     }
                 }
             }
         }
     </script>
 </head>
-<body class="text-slate-200 antialiased h-screen flex flex-col bg-slate-900">
+<body class="text-slate-900 antialiased h-screen flex flex-col bg-[#F5F6F8]">
 
     <!-- Notification Toast -->
     <div id="toast" class="fixed top-5 right-5 z-50 transform transition-transform duration-300 translate-x-full">

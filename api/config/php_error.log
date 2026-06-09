@@ -273,3 +273,43 @@ Stack trace:
 #0 C:\xampp\htdocs\quotation-system\temp_test_mail.php(3): require()
 #1 {main}
   thrown in C:\xampp\htdocs\quotation-system\api\test_mail.php on line 3
+[18-May-2026 18:33:18 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '14-01' for key 'user_id' in C:\xampp\htdocs\quotation-system\api\models\Product.php:27
+Stack trace:
+#0 C:\xampp\htdocs\quotation-system\api\models\Product.php(27): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\quotation-system\api\controllers\ProductController.php(38): Product->create(Array, 14)
+#2 C:\xampp\htdocs\quotation-system\api\utils\Router.php(63): ProductController->create()
+#3 C:\xampp\htdocs\quotation-system\api\index.php(115): Router->dispatch('POST', '/quotation-syst...')
+#4 {main}
+  thrown in C:\xampp\htdocs\quotation-system\api\models\Product.php on line 27
+[18-May-2026 18:33:36 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '14-01' for key 'user_id' in C:\xampp\htdocs\quotation-system\api\models\Product.php:27
+Stack trace:
+#0 C:\xampp\htdocs\quotation-system\api\models\Product.php(27): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\quotation-system\api\controllers\ProductController.php(38): Product->create(Array, 14)
+#2 C:\xampp\htdocs\quotation-system\api\utils\Router.php(63): ProductController->create()
+#3 C:\xampp\htdocs\quotation-system\api\index.php(115): Router->dispatch('POST', '/quotation-syst...')
+#4 {main}
+  thrown in C:\xampp\htdocs\quotation-system\api\models\Product.php on line 27
+[18-May-2026 18:33:59 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '14-01' for key 'user_id' in C:\xampp\htdocs\quotation-system\api\models\Product.php:27
+Stack trace:
+#0 C:\xampp\htdocs\quotation-system\api\models\Product.php(27): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\quotation-system\api\controllers\ProductController.php(38): Product->create(Array, 14)
+#2 C:\xampp\htdocs\quotation-system\api\utils\Router.php(63): ProductController->create()
+#3 C:\xampp\htdocs\quotation-system\api\index.php(115): Router->dispatch('POST', '/quotation-syst...')
+#4 {main}
+  thrown in C:\xampp\htdocs\quotation-system\api\models\Product.php on line 27
+[18-May-2026 18:35:36 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '14-01' for key 'user_id' in C:\xampp\htdocs\quotation-system\api\models\Product.php:27
+Stack trace:
+#0 C:\xampp\htdocs\quotation-system\api\models\Product.php(27): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\quotation-system\api\controllers\ProductController.php(38): Product->create(Array, 14)
+#2 C:\xampp\htdocs\quotation-system\api\utils\Router.php(63): ProductController->create()
+#3 C:\xampp\htdocs\quotation-system\api\index.php(115): Router->dispatch('POST', '/quotation-syst...')
+#4 {main}
+  thrown in C:\xampp\htdocs\quotation-system\api\models\Product.php on line 27
+[18-May-2026 18:36:19 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '14-01' for key 'user_id' in C:\xampp\htdocs\quotation-system\api\models\Product.php:27
+Stack trace:
+#0 C:\xampp\htdocs\quotation-system\api\models\Product.php(27): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\quotation-system\api\controllers\ProductController.php(38): Product->create(Array, 14)
+#2 C:\xampp\htdocs\quotation-system\api\utils\Router.php(63): ProductController->create()
+#3 C:\xampp\htdocs\quotation-system\api\index.php(115): Router->dispatch('POST', '/quotation-syst...')
+#4 {main}
+  thrown in C:\xampp\htdocs\quotation-system\api\models\Product.php on line 27

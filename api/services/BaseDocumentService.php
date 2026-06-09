@@ -59,7 +59,7 @@ class BaseDocumentService {
         $totals = $calculation['totals'];
         
         $numberField = $this->getNumberFieldName();
-        $docNumber = $data[$numberField] ?? $this->generateNextNumber($user_id);
+        $docNumber = !empty($data[$numberField]) ? $data[$numberField] : $this->generateNextNumber($user_id);
 
         $extraFields = '';
         $extraValues = '';
@@ -87,6 +87,18 @@ class BaseDocumentService {
             $extraFields .= ', stamp_text';
             $extraValues .= ', :stamp_text';
             $params['stamp_text'] = $data['stamp_text'] ?? null;
+        }
+
+        if ($this->hasColumn('po_number')) {
+            $extraFields .= ', po_number';
+            $extraValues .= ', :po_number';
+            $params['po_number'] = $data['po_number'] ?? null;
+        }
+
+        if ($this->hasColumn('due_date')) {
+            $extraFields .= ', due_date';
+            $extraValues .= ', :due_date';
+            $params['due_date'] = $data['due_date'] ?? null;
         }
 
         $sql = "INSERT INTO {$this->mainTable} (user_id, customer_id, {$numberField}, issue_date, status, subtotal, tax_total, discount_total, grand_total, notes, terms_conditions{$extraFields}) 
@@ -129,6 +141,16 @@ class BaseDocumentService {
         if ($this->hasColumn('stamp_text')) {
             $updateFields .= ', stamp_text = :stamp_text';
             $params['stamp_text'] = $data['stamp_text'] ?? null;
+        }
+
+        if ($this->hasColumn('po_number')) {
+            $updateFields .= ', po_number = :po_number';
+            $params['po_number'] = $data['po_number'] ?? null;
+        }
+
+        if ($this->hasColumn('due_date')) {
+            $updateFields .= ', due_date = :due_date';
+            $params['due_date'] = $data['due_date'] ?? null;
         }
 
         $sql = "UPDATE {$this->mainTable} SET 

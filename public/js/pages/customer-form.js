@@ -14,52 +14,52 @@ const CustomerForm = {
         const action = this.customerId ? 'Edit' : 'Create';
 
         return `
-            <div class="max-w-3xl mx-auto bg-slate-800 rounded-xl shadow-sm border border-slate-700 overflow-hidden fade-in">
-                <div class="px-6 py-4 border-b border-slate-700 bg-slate-900/50 flex justify-between items-center">
-                    <h2 class="text-xl font-bold text-slate-100">${action} Customer</h2>
-                    <button onclick="window.location.hash='#/customers'" class="text-slate-400 hover:text-slate-300">
-                        Back to List
+            <div class="max-w-4xl mx-auto bg-card rounded-2xl shadow-xl border border-borderDivider overflow-hidden fade-in">
+                <div class="px-8 py-6 border-b border-borderDivider bg-brand-dark text-white flex justify-between items-center">
+                    <h2 class="text-2xl font-black tracking-tight">${action} Client Profile</h2>
+                    <button onclick="window.location.hash='#/customers'" class="text-white/70 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-all">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                     </button>
                 </div>
                 
-                <form id="customer-form" class="p-6 space-y-6" onsubmit="CustomerForm.save(event)">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1">Company Name <span class="text-red-500">*</span></label>
-                            <input type="text" id="cust-company" required class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                <form id="customer-form" class="p-8 space-y-10" onsubmit="CustomerForm.save(event)">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-1">
+                            <label class="block text-xs font-black text-textSecondary uppercase tracking-widest ml-1">Company / Business Name <span class="text-brand-red">*</span></label>
+                            <input type="text" id="cust-company" required class="w-full px-4 py-3 bg-bgMain text-textPrimary border border-borderDivider rounded-xl focus:ring-2 focus:ring-brand-red outline-none transition-all font-semibold" placeholder="Legal Entity Name">
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1">Contact Person</label>
-                            <input type="text" id="cust-contact" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                        <div class="space-y-1">
+                            <label class="block text-xs font-black text-textSecondary uppercase tracking-widest ml-1">Primary Contact Person</label>
+                            <input type="text" id="cust-contact" class="w-full px-4 py-3 bg-bgMain text-textPrimary border border-borderDivider rounded-xl focus:ring-2 focus:ring-brand-red outline-none transition-all font-semibold" placeholder="Name of representative">
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1">Email</label>
-                            <input type="email" id="cust-email" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                        <div class="space-y-1">
+                            <label class="block text-xs font-black text-textSecondary uppercase tracking-widest ml-1">Email Address</label>
+                            <input type="email" id="cust-email" class="w-full px-4 py-3 bg-bgMain text-textPrimary border border-borderDivider rounded-xl focus:ring-2 focus:ring-brand-red outline-none transition-all font-semibold" placeholder="billing@client.com">
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1">Phone</label>
-                            <input type="text" id="cust-phone" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                        <div class="space-y-1">
+                            <label class="block text-xs font-black text-textSecondary uppercase tracking-widest ml-1">Phone Number</label>
+                            <input type="text" id="cust-phone" class="w-full px-4 py-3 bg-bgMain text-textPrimary border border-borderDivider rounded-xl focus:ring-2 focus:ring-brand-red outline-none transition-all font-semibold" placeholder="+92 ...">
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1">Tax Number / VAT</label>
-                            <input type="text" id="cust-tax" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                        <div class="space-y-1 md:col-span-2">
+                            <label class="block text-xs font-black text-textSecondary uppercase tracking-widest ml-1">Tax Registration Number (NTN/VAT)</label>
+                            <input type="text" id="cust-tax" class="w-full px-4 py-3 bg-bgMain text-textPrimary border border-borderDivider rounded-xl focus:ring-2 focus:ring-brand-red outline-none transition-all font-semibold" placeholder="Official Tax ID">
                         </div>
                     </div>
                     
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1">Billing Address</label>
-                            <textarea id="cust-billing" rows="3" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"></textarea>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-1">
+                            <label class="block text-xs font-black text-textSecondary uppercase tracking-widest ml-1">Billing Address</label>
+                            <textarea id="cust-billing" rows="3" class="w-full px-4 py-3 bg-bgMain text-textPrimary border border-borderDivider rounded-xl focus:ring-2 focus:ring-brand-red outline-none transition-all font-semibold" placeholder="Registered billing address"></textarea>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1">Shipping Address</label>
-                            <textarea id="cust-shipping" rows="3" class="w-full px-4 py-2 bg-slate-50 text-black border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"></textarea>
+                        <div class="space-y-1">
+                            <label class="block text-xs font-black text-textSecondary uppercase tracking-widest ml-1">Shipping / Delivery Address</label>
+                            <textarea id="cust-shipping" rows="3" class="w-full px-4 py-3 bg-bgMain text-textPrimary border border-borderDivider rounded-xl focus:ring-2 focus:ring-brand-red outline-none transition-all font-semibold" placeholder="Physical delivery location"></textarea>
                         </div>
                     </div>
 
-                    <div class="flex justify-end pt-4 border-t border-slate-700 ${action === 'View' ? 'hidden' : ''}">
-                        <button type="submit" class="bg-indigo-600 text-white px-8 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors shadow-sm font-medium">
-                            Save Customer
+                    <div class="flex justify-end pt-6 border-t border-borderDivider ${action === 'View' ? 'hidden' : ''}">
+                        <button type="submit" class="bg-brand-red text-white px-10 py-3.5 rounded-2xl hover:bg-brand-redHover transition-all shadow-xl shadow-brand-red/20 font-black uppercase tracking-widest transform hover:-translate-y-1">
+                            Save Client Record
                         </button>
                     </div>
                 </form>

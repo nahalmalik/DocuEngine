@@ -105,6 +105,7 @@ CREATE TABLE IF NOT EXISTS invoices (
     user_id INT NOT NULL,
     customer_id INT NOT NULL,
     invoice_number VARCHAR(50) NOT NULL,
+    po_number VARCHAR(50) NULL,
     issue_date DATE NOT NULL,
     due_date DATE NULL,
     status VARCHAR(50) DEFAULT 'draft',

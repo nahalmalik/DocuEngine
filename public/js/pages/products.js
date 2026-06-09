@@ -8,29 +8,29 @@ const Products = {
         }
 
         return `
-            <div class="max-w-7xl mx-auto space-y-6 fade-in p-6 bg-slate-800 rounded-xl shadow-sm border border-slate-700">
-                <div class="flex justify-between items-center border-b border-slate-700 pb-4">
-                    <h1 class="text-2xl font-bold text-slate-100">Products</h1>
+            <div class="max-w-7xl mx-auto space-y-6 fade-in p-6 bg-card rounded-2xl shadow-xl border border-borderDivider overflow-hidden">
+                <div class="flex justify-between items-center border-b border-borderDivider pb-5">
+                    <h1 class="text-3xl font-black text-brand-dark tracking-tighter">Products Catalog</h1>
                 </div>
 
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-slate-900/50">
+                <div class="overflow-hidden rounded-2xl border border-borderDivider">
+                    <table class="min-w-full divide-y divide-borderDivider">
+                        <thead class="bg-bgMain">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">SKU</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Product Description</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Price</th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">Actions</th>
+                                <th class="px-6 py-4 text-left text-xs font-black text-textSecondary uppercase tracking-widest">SKU</th>
+                                <th class="px-6 py-4 text-left text-xs font-black text-textSecondary uppercase tracking-widest">Product Description</th>
+                                <th class="px-6 py-4 text-left text-xs font-black text-textSecondary uppercase tracking-widest">Unit Price</th>
+                                <th class="px-6 py-4 text-right text-xs font-black text-textSecondary uppercase tracking-widest">Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="products-table-body" class="bg-slate-800 divide-y divide-gray-200">
-                            <tr><td colspan="4" class="px-6 py-4 text-center text-sm text-slate-400">Loading...</td></tr>
+                        <tbody id="products-table-body" class="bg-white divide-y divide-borderDivider">
+                            <tr><td colspan="4" class="px-6 py-8 text-center text-sm text-textSecondary animate-pulse">Fetching inventory items...</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="mt-6 pt-4 border-t border-slate-700">
-                    <button onclick="window.location.hash='#/products/add'" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors shadow-sm font-medium flex items-center gap-2">
+                <div class="mt-8 pt-6 border-t border-borderDivider flex justify-end">
+                    <button onclick="window.location.hash='#/products/add'" class="bg-brand-red text-white px-8 py-3 rounded-xl hover:bg-brand-redHover transition-all shadow-lg shadow-brand-red/20 font-black uppercase tracking-widest flex items-center gap-2 transform hover:-translate-y-1">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                         Add New Product
                     </button>
@@ -58,14 +58,14 @@ const Products = {
             let html = '';
             products.forEach(prod => {
                 html += `
-                    <tr class="hover:bg-slate-900/50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">${prod.sku || 'N/A'}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-white">${prod.name}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-400">Rs. ${parseFloat(prod.unit_price).toFixed(2)}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                            <a href="#/products/view/${prod.id}" class="text-indigo-600 hover:text-indigo-900">View</a>
-                            <a href="#/products/edit/${prod.id}" class="text-blue-600 hover:text-blue-900">Update</a>
-                            <button onclick="Products.deleteProduct(${prod.id})" class="text-red-600 hover:text-red-900">Delete</button>
+                    <tr class="hover:bg-bgMain/30 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-black text-brand-dark uppercase tracking-tighter">${prod.sku || 'N/A'}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-textPrimary">${prod.name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-textSecondary">Rs. ${parseFloat(prod.unit_price).toFixed(2)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold space-x-4">
+                            <a href="#/products/view/${prod.id}" class="text-brand-dark hover:text-brand-red transition-colors">View</a>
+                            <a href="#/products/edit/${prod.id}" class="text-brand-red hover:text-brand-redHover transition-colors">Update</a>
+                            <button onclick="Products.deleteProduct(${prod.id})" class="text-slate-400 hover:text-red-600 transition-colors">Delete</button>
                         </td>
                     </tr>
                 `;
