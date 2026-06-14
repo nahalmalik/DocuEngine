@@ -15,9 +15,9 @@ const ProductForm = {
 
         return `
             <div class="max-w-2xl mx-auto bg-card rounded-2xl shadow-xl border border-borderDivider overflow-hidden fade-in">
-                <div class="px-8 py-6 border-b border-borderDivider bg-brand-dark text-white flex justify-between items-center">
+                <div class="px-8 py-6 border-b border-borderDivider bg-card text-textPrimary flex justify-between items-center">
                     <h2 class="text-2xl font-black tracking-tight">${action} Product</h2>
-                    <button onclick="window.location.hash='#/products'" class="text-white/70 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-all">
+                    <button onclick="window.location.hash='#/products'" class="text-textSecondary hover:text-textPrimary bg-bgMain/50 p-2 rounded-full transition-all">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                     </button>
                 </div>
@@ -52,9 +52,9 @@ const ProductForm = {
                         </div>
 
                         <div class="bg-bgMain p-4 rounded-xl border border-borderDivider">
-                            <label class="flex items-center space-x-3 cursor-pointer group">
+                                <label class="flex items-center space-x-3 cursor-pointer group">
                                 <input type="checkbox" id="prod-active" checked class="w-6 h-6 text-brand-red rounded-lg border-borderDivider focus:ring-brand-red transition-all">
-                                <span class="text-sm font-black text-brand-dark uppercase tracking-widest group-hover:text-brand-red transition-colors">Product is available for use</span>
+                                <span class="text-sm font-black text-textPrimary uppercase tracking-widest group-hover:text-brand-red transition-colors">Product is available for use</span>
                             </label>
                         </div>
                     </div>

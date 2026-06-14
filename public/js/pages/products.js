@@ -10,21 +10,21 @@ const Products = {
         return `
             <div class="max-w-7xl mx-auto space-y-6 fade-in p-6 bg-card rounded-2xl shadow-xl border border-borderDivider overflow-hidden">
                 <div class="flex justify-between items-center border-b border-borderDivider pb-5">
-                    <h1 class="text-3xl font-black text-brand-dark tracking-tighter">Products Catalog</h1>
+                    <h1 class="text-3xl font-black text-textPrimary tracking-tighter">Products Catalog</h1>
                 </div>
 
-                <div class="overflow-hidden rounded-2xl border border-borderDivider">
-                    <table class="min-w-full divide-y divide-borderDivider">
+                <div class="overflow-x-auto rounded-2xl border border-borderDivider">
+                    <table class="min-w-[720px] divide-y divide-borderDivider">
                         <thead class="bg-bgMain">
                             <tr>
-                                <th class="px-6 py-4 text-left text-xs font-black text-textSecondary uppercase tracking-widest">SKU</th>
-                                <th class="px-6 py-4 text-left text-xs font-black text-textSecondary uppercase tracking-widest">Product Description</th>
-                                <th class="px-6 py-4 text-left text-xs font-black text-textSecondary uppercase tracking-widest">Unit Price</th>
-                                <th class="px-6 py-4 text-right text-xs font-black text-textSecondary uppercase tracking-widest">Actions</th>
+                                <th class="px-4 py-3 sm:px-6 sm:py-4 text-left text-xs font-black text-textSecondary uppercase tracking-widest">SKU</th>
+                                <th class="px-4 py-3 sm:px-6 sm:py-4 text-left text-xs font-black text-textSecondary uppercase tracking-widest">Product Description</th>
+                                <th class="px-4 py-3 sm:px-6 sm:py-4 text-left text-xs font-black text-textSecondary uppercase tracking-widest">Unit Price</th>
+                                <th class="px-4 py-3 sm:px-6 sm:py-4 text-right text-xs font-black text-textSecondary uppercase tracking-widest">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="products-table-body" class="bg-white divide-y divide-borderDivider">
-                            <tr><td colspan="4" class="px-6 py-8 text-center text-sm text-textSecondary animate-pulse">Fetching inventory items...</td></tr>
+                            <tr><td colspan="4" class="px-4 py-6 sm:px-6 sm:py-8 text-center text-sm text-textSecondary animate-pulse">Fetching inventory items...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -47,11 +47,16 @@ const Products = {
 
         try {
             const response = await API.get('/products');
-            const products = response.data;
+
+            if (!response || response._nonJson) {
+                throw new Error('Could not parse server response');
+            }
+
+            const products = response.data || response;
             const tbody = document.getElementById('products-table-body');
             
-            if (!products || products.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-4 text-center text-sm text-slate-400">No products found.</td></tr>';
+            if (!products || !Array.isArray(products) || products.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-4 text-center text-sm text-textSecondary">No products found.</td></tr>';
                 return;
             }
 
@@ -59,13 +64,13 @@ const Products = {
             products.forEach(prod => {
                 html += `
                     <tr class="hover:bg-bgMain/30 transition-colors">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-black text-brand-dark uppercase tracking-tighter">${prod.sku || 'N/A'}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-black text-textPrimary uppercase tracking-tighter">${prod.sku || 'N/A'}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-textPrimary">${prod.name}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-textSecondary">Rs. ${parseFloat(prod.unit_price).toFixed(2)}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold space-x-4">
-                            <a href="#/products/view/${prod.id}" class="text-brand-dark hover:text-brand-red transition-colors">View</a>
+                            <a href="#/products/view/${prod.id}" class="text-textPrimary hover:text-brand-red transition-colors">View</a>
                             <a href="#/products/edit/${prod.id}" class="text-brand-red hover:text-brand-redHover transition-colors">Update</a>
-                            <button onclick="Products.deleteProduct(${prod.id})" class="text-slate-400 hover:text-red-600 transition-colors">Delete</button>
+                            <button onclick="Products.deleteProduct(${prod.id})" class="text-textSecondary hover:text-red-600 transition-colors">Delete</button>
                         </td>
                     </tr>
                 `;

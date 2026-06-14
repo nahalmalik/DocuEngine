@@ -6,7 +6,8 @@
     "androidScheme": "http",
     "cleartext": true,
     "allowNavigation": [
-      "docu.bizhubpakistan.com"
+      "localhost",
+      "192.168.18.51"
     ]
   }
 }

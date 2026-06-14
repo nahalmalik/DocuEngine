@@ -3,18 +3,20 @@
 const ForgotPage = {
     render() {
         return `
-            <div class="max-w-md mx-auto p-6">
-                <h1 class="text-2xl font-bold text-white mb-2">Forgot Password</h1>
-                <p class="text-sm text-slate-400 mb-4">Enter your account email and we'll send password reset instructions.</p>
-                <form id="forgotForm" class="space-y-4">
-                    <div>
-                        <label class="text-sm text-slate-300">Email</label>
-                        <input id="forgot-email" type="email" required class="w-full px-3 py-2 rounded bg-slate-800 border border-slate-700 text-white" />
-                    </div>
-                    <div>
-                        <button type="submit" class="bg-indigo-600 px-4 py-2 rounded text-white">Send Reset Email</button>
-                    </div>
-                </form>
+            <div class="min-h-screen flex items-center justify-center bg-bgMain py-12 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-md w-full bg-card border border-borderDivider p-8 rounded-3xl shadow-2xl fade-in">
+                    <h1 class="text-2xl font-bold text-textPrimary mb-2">Forgot Password</h1>
+                    <p class="text-sm text-textSecondary mb-4">Enter your account email and we'll send password reset instructions.</p>
+                    <form id="forgotForm" class="space-y-4">
+                        <div>
+                            <label class="text-sm text-textSecondary">Email</label>
+                            <input id="forgot-email" type="email" required class="w-full px-4 py-3 rounded-2xl border border-borderDivider bg-bgMain/50 text-textPrimary" />
+                        </div>
+                        <div>
+                            <button type="submit" class="w-full bg-brand-red text-white py-3 rounded-2xl font-bold">Send Reset Email</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         `;
     },

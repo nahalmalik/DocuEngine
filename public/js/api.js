@@ -8,6 +8,14 @@ const API = {
 
     // Base URL configuration
     getBaseUrl() {
+        const isAndroid = /Android/i.test(navigator.userAgent);
+        const isApp = isAndroid || this.isCapacitor;
+
+        if (isApp) {
+            // Using your PC's detected IP: 192.168.18.51
+            return 'http://192.168.18.51/quotation-system/api/v1';
+        }
+
         if (window.location.protocol === 'file:') {
             return 'http://localhost/quotation-system/api/v1';
         }
@@ -16,7 +24,7 @@ const API = {
             return `${window.location.origin}/quotation-system/api/v1`;
         }
 
-        return this.isCapacitor ? 'http://docu.bizhubpakistan.com/api/v1' : '../api/v1';
+        return '../api/v1';
     },
 
     async request(endpoint, method = 'GET', body = null) {
@@ -68,8 +76,8 @@ const API = {
                     alert(`SERVER ERROR\n\nURL: ${url}\n\nResponse:\n${text.substring(0, 200)}`);
                     throw new Error('Server returned non-JSON response.');
                 }
-                // If it's OK but not JSON (like a direct PDF view), return the response or null
-                return null;
+                // If it's OK but not JSON (like a direct PDF view), return the response or a specific indicator
+                return { _nonJson: true, response };
             }
         } catch (error) {
             if (error.message !== 'Server returned non-JSON response.') {

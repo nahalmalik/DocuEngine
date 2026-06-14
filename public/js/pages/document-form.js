@@ -25,9 +25,9 @@ const DocumentForm = {
         return `
             <div class="max-w-7xl mx-auto space-y-6 fade-in p-6">
                 <div class="bg-card rounded-2xl shadow-xl border border-borderDivider overflow-hidden">
-                    <div class="px-8 py-6 border-b border-borderDivider bg-brand-dark text-white flex justify-between items-center">
+                    <div class="px-8 py-6 border-b border-borderDivider bg-card text-textPrimary flex justify-between items-center">
                         <h2 class="text-2xl font-black tracking-tight">${this.documentId ? 'Edit' : 'Create'} ${title}</h2>
-                        <button onclick="window.location.hash='#/documents?type=${this.type}'" class="text-white/70 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-all">
+                        <button onclick="window.location.hash='#/documents?type=${this.type}'" class="text-textSecondary hover:text-textPrimary bg-bgMain/50 p-2 rounded-full transition-all">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                         </button>
                     </div>
@@ -59,25 +59,25 @@ const DocumentForm = {
                         <div class="space-y-6">
                             <div class="flex justify-between items-center">
                                 <h3 class="text-xl font-black text-textPrimary tracking-tight">Line Items</h3>
-                                <button type="button" onclick="DocumentForm.addItem()" class="px-6 py-2.5 bg-brand-dark text-white rounded-xl hover:bg-brand-red transition-all text-sm font-bold shadow-sm">Add New Item</button>
+                                <button type="button" onclick="DocumentForm.addItem()" class="px-6 py-2.5 bg-brand-red text-white rounded-xl hover:bg-brand-redHover transition-all text-sm font-bold shadow-sm">Add New Item</button>
                             </div>
-                            <div class="overflow-hidden rounded-2xl border border-borderDivider">
-                                <table class="min-w-full divide-y divide-borderDivider">
+                            <div class="overflow-x-auto rounded-2xl border border-borderDivider">
+                                <table class="min-w-[900px] divide-y divide-borderDivider">
                                     <thead class="bg-bgMain">
                                         <tr>
-                                            <th class="px-6 py-4 text-left text-xs font-black text-textSecondary uppercase tracking-widest">Item Details</th>
-                                            <th class="px-6 py-4 text-center text-xs font-black text-textSecondary uppercase tracking-widest w-24">Qty</th>
-                                            <th class="px-6 py-4 text-right text-xs font-black text-textSecondary uppercase tracking-widest w-24 ${this.type === 'receipt' ? 'hidden' : ''}">Tax %</th>
-                                            <th class="px-6 py-4 text-right text-xs font-black text-textSecondary uppercase tracking-widest w-40 ${this.type === 'receipt' ? 'hidden' : ''}">Unit Price</th>
-                                            <th class="px-6 py-4 text-right text-xs font-black text-textSecondary uppercase tracking-widest w-40 ${this.type === 'receipt' ? 'hidden' : ''}">Line Total</th>
-                                            <th class="px-6 py-4 text-center w-16"></th>
+                                            <th class="px-4 py-3 sm:px-6 sm:py-4 text-left text-xs font-black text-textSecondary uppercase tracking-widest">Item Details</th>
+                                            <th class="px-4 py-3 sm:px-6 sm:py-4 text-center text-xs font-black text-textSecondary uppercase tracking-widest w-24">Qty</th>
+                                            <th class="px-4 py-3 sm:px-6 sm:py-4 text-right text-xs font-black text-textSecondary uppercase tracking-widest w-24 ${this.type === 'receipt' ? 'hidden' : ''}">Tax %</th>
+                                            <th class="px-4 py-3 sm:px-6 sm:py-4 text-right text-xs font-black text-textSecondary uppercase tracking-widest w-40 ${this.type === 'receipt' ? 'hidden' : ''}">Unit Price</th>
+                                            <th class="px-4 py-3 sm:px-6 sm:py-4 text-right text-xs font-black text-textSecondary uppercase tracking-widest w-40 ${this.type === 'receipt' ? 'hidden' : ''}">Line Total</th>
+                                            <th class="px-4 py-3 sm:px-6 sm:py-4 text-center w-16"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="items-body" class="divide-y divide-borderDivider bg-white"></tbody>
                                     <tfoot class="${this.type === 'receipt' ? 'hidden' : ''} bg-bgMain/50">
                                         <tr>
-                                            <td colspan="4" class="px-6 py-6 text-right text-sm font-black text-textSecondary uppercase tracking-widest">Grand Total:</td>
-                                            <td class="px-6 py-6 text-right text-2xl font-black text-brand-red">
+                                            <td colspan="4" class="px-4 py-4 sm:px-6 sm:py-6 text-right text-sm font-black text-textSecondary uppercase tracking-widest">Grand Total:</td>
+                                            <td class="px-4 py-4 sm:px-6 sm:py-6 text-right text-2xl font-black text-brand-red">
                                                 Rs. <span id="grand-total">0.00</span>
                                             </td>
                                             <td></td>

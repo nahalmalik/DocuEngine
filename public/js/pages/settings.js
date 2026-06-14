@@ -3,64 +3,64 @@
 const Settings = {
     async render() {
         return `
-            <div class="max-w-7xl mx-auto space-y-6 fade-in p-6 bg-slate-800 rounded-xl shadow-sm border border-slate-700">
-                <div class="flex justify-between items-center border-b border-slate-700 pb-4">
-                    <h1 class="text-2xl font-bold text-slate-100">Settings</h1>
+            <div class="max-w-7xl mx-auto space-y-6 fade-in p-6 bg-card rounded-xl shadow-sm border border-borderDivider">
+                <div class="flex justify-between items-center border-b border-borderDivider pb-4">
+                    <h1 class="text-2xl font-bold text-textPrimary">Settings</h1>
                 </div>
 
                 <form id="settings-form" class="space-y-6 mt-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-medium text-slate-300">Company Name</label>
-                            <input type="text" id="company_name" name="company_name" class="mt-1 block w-full rounded-md bg-slate-50 text-slate-900 border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border">
+                            <label class="block text-sm font-medium text-textSecondary">Company Name</label>
+                            <input type="text" id="company_name" name="company_name" class="mt-1 block w-full rounded-md bg-bgMain/50 text-textPrimary border border-borderDivider shadow-sm focus:border-brand-red focus:ring-brand-red sm:text-sm px-3 py-2">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-300">Company Email</label>
-                            <input type="email" id="company_email" name="company_email" class="mt-1 block w-full rounded-md bg-slate-50 text-slate-900 border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border">
+                            <label class="block text-sm font-medium text-textSecondary">Company Email</label>
+                            <input type="email" id="company_email" name="company_email" class="mt-1 block w-full rounded-md bg-bgMain/50 text-textPrimary border border-borderDivider shadow-sm focus:border-brand-red focus:ring-brand-red sm:text-sm px-3 py-2">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-300">Company Phone</label>
-                            <input type="text" id="company_phone" name="company_phone" class="mt-1 block w-full rounded-md bg-slate-50 text-slate-900 border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border">
+                            <label class="block text-sm font-medium text-textSecondary">Company Phone</label>
+                            <input type="text" id="company_phone" name="company_phone" class="mt-1 block w-full rounded-md bg-bgMain/50 text-textPrimary border border-borderDivider shadow-sm focus:border-brand-red focus:ring-brand-red sm:text-sm px-3 py-2">
                         </div>
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-slate-300">Company Address</label>
-                            <textarea id="company_address" name="company_address" rows="3" class="mt-1 block w-full rounded-md bg-slate-50 text-slate-900 border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"></textarea>
+                            <label class="block text-sm font-medium text-textSecondary">Company Address</label>
+                            <textarea id="company_address" name="company_address" rows="3" class="mt-1 block w-full rounded-md bg-bgMain/50 text-textPrimary border border-borderDivider shadow-sm focus:border-brand-red focus:ring-brand-red sm:text-sm px-3 py-2"></textarea>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-300">Bank Account Title</label>
-                            <input type="text" id="bank_account_title" name="bank_account_title" class="mt-1 block w-full rounded-md bg-slate-50 text-slate-900 border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border">
+                            <label class="block text-sm font-medium text-textSecondary">Bank Account Title</label>
+                            <input type="text" id="bank_account_title" name="bank_account_title" class="mt-1 block w-full rounded-md bg-bgMain/50 text-textPrimary border border-borderDivider shadow-sm focus:border-brand-red focus:ring-brand-red sm:text-sm px-3 py-2">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-300">Bank Account Number</label>
-                            <input type="text" id="bank_account_number" name="bank_account_number" class="mt-1 block w-full rounded-md bg-slate-50 text-slate-900 border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border">
+                            <label class="block text-sm font-medium text-textSecondary">Bank Account Number</label>
+                            <input type="text" id="bank_account_number" name="bank_account_number" class="mt-1 block w-full rounded-md bg-bgMain/50 text-textPrimary border border-borderDivider shadow-sm focus:border-brand-red focus:ring-brand-red sm:text-sm px-3 py-2">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-300">Bank Name</label>
-                            <input type="text" id="bank_name" name="bank_name" class="mt-1 block w-full rounded-md bg-slate-50 text-slate-900 border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border">
+                            <label class="block text-sm font-medium text-textSecondary">Bank Name</label>
+                            <input type="text" id="bank_name" name="bank_name" class="mt-1 block w-full rounded-md bg-bgMain/50 text-textPrimary border border-borderDivider shadow-sm focus:border-brand-red focus:ring-brand-red sm:text-sm px-3 py-2">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-300">Bank Branch</label>
-                            <input type="text" id="bank_branch" name="bank_branch" class="mt-1 block w-full rounded-md bg-slate-50 text-slate-900 border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border">
+                            <label class="block text-sm font-medium text-textSecondary">Bank Branch</label>
+                            <input type="text" id="bank_branch" name="bank_branch" class="mt-1 block w-full rounded-md bg-bgMain/50 text-textPrimary border border-borderDivider shadow-sm focus:border-brand-red focus:ring-brand-red sm:text-sm px-3 py-2">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-300">Company NTN</label>
-                            <input type="text" id="company_ntn" name="company_ntn" class="mt-1 block w-full rounded-md bg-slate-50 text-slate-900 border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border">
+                            <label class="block text-sm font-medium text-textSecondary">Company NTN</label>
+                            <input type="text" id="company_ntn" name="company_ntn" class="mt-1 block w-full rounded-md bg-bgMain/50 text-textPrimary border border-borderDivider shadow-sm focus:border-brand-red focus:ring-brand-red sm:text-sm px-3 py-2">
                         </div>
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-slate-300">Company Logo (Image File)</label>
-                            <input type="file" id="company_logo_file" accept="image/*" class="mt-1 block w-full rounded-md bg-slate-50 text-slate-900 border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border">
+                            <label class="block text-sm font-medium text-textSecondary">Company Logo (Image File)</label>
+                            <input type="file" id="company_logo_file" accept="image/*" class="mt-1 block w-full rounded-md bg-bgMain/50 text-textPrimary border border-borderDivider shadow-sm focus:border-brand-red focus:ring-brand-red sm:text-sm px-3 py-2">
                             <input type="hidden" id="company_logo" name="company_logo">
                             <img id="logo_preview" src="" class="mt-2 h-16 hidden">
                         </div>
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-slate-300">Authorized Signature (Image File)</label>
-                            <input type="file" id="company_signature_file" accept="image/*" class="mt-1 block w-full rounded-md bg-slate-50 text-slate-900 border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border">
+                            <label class="block text-sm font-medium text-textSecondary">Authorized Signature (Image File)</label>
+                            <input type="file" id="company_signature_file" accept="image/*" class="mt-1 block w-full rounded-md bg-bgMain/50 text-textPrimary border border-borderDivider shadow-sm focus:border-brand-red focus:ring-brand-red sm:text-sm px-3 py-2">
                             <input type="hidden" id="company_signature" name="company_signature">
                             <img id="signature_preview" src="" class="mt-2 h-16 hidden">
                         </div>
                     </div>
-                    <div class="border-t border-slate-700 pt-4 flex justify-end">
-                        <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors shadow-sm font-medium">Save Settings</button>
+                    <div class="border-t border-borderDivider pt-4 flex justify-end">
+                        <button type="submit" class="bg-brand-red text-white px-6 py-2 rounded-lg hover:bg-brand-redHover transition-colors shadow-sm font-medium">Save Settings</button>
                     </div>
                 </form>
             </div>

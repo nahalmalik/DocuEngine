@@ -2,11 +2,16 @@
 
 const Navbar = {
     settingsCache: null,
-    
+
     async render() {
         const user = Auth.getUser();
-        
-        let logoHtml = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>`;
+
+        let logoHtml = `<svg class="w-6 h-6 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+            </path>
+        </svg>`;
+
         let companyName = 'InvoQuote';
 
         if (user) {
@@ -14,18 +19,26 @@ const Navbar = {
                 if (!this.settingsCache) {
                     const res = await API.get('/settings');
                     this.settingsCache = {};
+
                     if (Array.isArray(res.data)) {
-                        res.data.forEach(item => this.settingsCache[item.setting_key] = item.setting_value);
+                        res.data.forEach(item => {
+                            this.settingsCache[item.setting_key] = item.setting_value;
+                        });
                     } else {
                         this.settingsCache = res.data || {};
                     }
                 }
-                
+
                 if (this.settingsCache.company_name) {
                     companyName = this.settingsCache.company_name;
                 }
+
                 if (this.settingsCache.company_logo) {
-                    logoHtml = `<img src="${this.settingsCache.company_logo}" alt="Logo" class="h-8 w-auto max-w-[150px] object-contain bg-white/10 rounded p-1">`;
+                    logoHtml = `
+                        <img src="${this.settingsCache.company_logo}"
+                             alt="Logo"
+                             class="h-7 w-auto max-w-[120px] object-contain rounded bg-white/10 p-1">
+                    `;
                 }
             } catch (e) {
                 console.error("Failed to load settings for navbar", e);
@@ -33,25 +46,58 @@ const Navbar = {
         }
 
         return `
-            <nav class="bg-brand-dark border-b border-white/5 text-white shadow-xl sticky top-0 z-40">
+            <nav class="bg-black border-b border-brand-red/40 text-white shadow-sm sticky top-0 z-40">
+
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
                     <div class="flex items-center justify-between h-16">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 font-black text-xl tracking-tighter flex items-center gap-3 text-brand-red">
-                                ${logoHtml}
-                                <span class="hidden sm:inline text-white">${companyName}</span>
-                            </div>
-                            <div class="ml-4 sm:ml-10 flex items-baseline space-x-2 sm:space-x-4">
-                                <a href="#/dashboard" class="px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm font-bold hover:bg-white/10 transition-all border border-transparent hover:border-white/5">Dashboard</a>
-                                <a href="#/settings" class="px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm font-bold hover:bg-white/10 transition-all border border-transparent hover:border-white/5">Settings</a>
-                            </div>
+
+                        <!-- LEFT -->
+                        <div class="flex items-center gap-3">
+
+                            ${logoHtml}
+
+                            <!-- company name (optional visible on left too) -->
+                            <span class="hidden sm:inline text-white font-bold tracking-tight">
+                                ${companyName}
+                            </span>
+
+                            <a href="#/dashboard"
+                               class="ml-4 px-2 py-1 text-xs font-semibold rounded-md
+                                      text-white/80 hover:text-white
+                                      hover:bg-brand-red/20 transition">
+                                Dashboard
+                            </a>
+
+                            <a href="#/settings"
+                               class="px-2 py-1 text-xs font-semibold rounded-md
+                                      text-white/80 hover:text-white
+                                      hover:bg-brand-red/20 transition">
+                                Settings
+                            </a>
+
                         </div>
-                        <div class="flex items-center ml-2 space-x-2">
-                            <span class="hidden lg:inline mr-4 text-xs font-semibold text-slate-400 uppercase tracking-widest">${user ? user.name : ''}</span>
-                            <button onclick="Auth.logout()" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-bold bg-white/5 hover:bg-brand-red hover:text-white border border-white/10 transition-all shadow-sm">Logout</button>
+
+
+                        <!-- RIGHT -->
+                        <div class="flex items-center gap-2">
+
+                            <span class="hidden lg:inline text-[11px] uppercase tracking-widest text-gray-400">
+                                ${user ? user.name : ''}
+                            </span>
+
+                            <button onclick="Auth.logout()"
+                                class="px-3 py-1 text-xs font-bold rounded-md
+                                       bg-brand-red text-white
+                                       hover:bg-red-700 transition">
+                                Logout
+                            </button>
+
                         </div>
+
                     </div>
                 </div>
+
             </nav>
         `;
     }

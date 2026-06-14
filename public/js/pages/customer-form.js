@@ -15,9 +15,9 @@ const CustomerForm = {
 
         return `
             <div class="max-w-4xl mx-auto bg-card rounded-2xl shadow-xl border border-borderDivider overflow-hidden fade-in">
-                <div class="px-8 py-6 border-b border-borderDivider bg-brand-dark text-white flex justify-between items-center">
+                <div class="px-8 py-6 border-b border-borderDivider bg-card text-textPrimary flex justify-between items-center">
                     <h2 class="text-2xl font-black tracking-tight">${action} Client Profile</h2>
-                    <button onclick="window.location.hash='#/customers'" class="text-white/70 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-all">
+                    <button onclick="window.location.hash='#/customers'" class="text-textSecondary hover:text-textPrimary bg-bgMain/50 p-2 rounded-full transition-all">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                     </button>
                 </div>

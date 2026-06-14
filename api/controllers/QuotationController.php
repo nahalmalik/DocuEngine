@@ -70,6 +70,7 @@ class QuotationController {
             Response::error('Quotation not found', 404);
         }
 
+        $data = json_decode(file_get_contents('php://input'), true) ?: [];
         $invoiceService = new BaseDocumentService('invoices', 'invoice_items', 'INV-');
         
         $data = [
@@ -79,6 +80,7 @@ class QuotationController {
             'status' => 'draft',
             'notes' => $quote['notes'],
             'terms_conditions' => $quote['terms_conditions'],
+            'po_number' => $data['po_number'] ?? null,
             'items' => []
         ];
 

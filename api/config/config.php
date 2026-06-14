@@ -8,7 +8,7 @@ define('APP_ENV', 'development'); // 'development' or 'production'
 if (APP_ENV === 'development') {
     define('BASE_URL', 'http://localhost/quotation-system');
 } else {
-    define('BASE_URL', 'http://docu.bizhubpakistan.com');
+    define('BASE_URL', 'http://localhost/quotation-system');
 }
 
 // Database Configuration

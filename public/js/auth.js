@@ -17,9 +17,20 @@ const Auth = {
     async login(email, password) {
         try {
             const response = await API.post('/auth/login', { email, password });
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
-            return true;
+
+            if (!response || response._nonJson) {
+                throw new Error('Invalid server response structure');
+            }
+
+            const data = response.data || response; // Handle both wrapped and unwrapped data
+
+            if (data.token) {
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                return true;
+            } else {
+                throw new Error('Login failed: No token received');
+            }
         } catch (error) {
             throw error;
         }

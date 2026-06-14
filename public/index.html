@@ -8,7 +8,7 @@
     <!-- Add Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #F5F6F8; }
+        body { font-family: 'Inter', sans-serif; background-color: #FFFFFF; }
         .glass-panel { background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 12px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); }
         .fade-in { animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -35,14 +35,14 @@
                         brand: {
                             red: '#E50914',
                             redHover: '#FF2E2E',
-                            dark: '#0F0F10',
-                            darkSurface: '#1A1A1D'
+                            dark: '#000000',
+                            darkSurface: '#111111'
                         },
                         primary: '#E50914',
-                        secondary: '#0F0F10',
-                        bgMain: '#F5F6F8',
+                        secondary: '#000000',
+                        bgMain: '#FFFFFF',
                         card: '#FFFFFF',
-                        textPrimary: '#111827',
+                        textPrimary: '#000000',
                         textSecondary: '#6B7280',
                         borderDivider: '#E5E7EB'
                     }
@@ -60,28 +60,28 @@
 
     <!-- Install App Modal -->
     <div id="install-modal" onclick="App.hideInstallPopup()" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 p-4">
-        <div onclick="event.stopPropagation()" class="w-full max-w-lg rounded-3xl bg-slate-900 border border-slate-700 shadow-2xl p-6">
+        <div onclick="event.stopPropagation()" class="w-full max-w-lg rounded-3xl bg-card border border-borderDivider shadow-2xl p-6">
             <div class="flex items-start justify-between gap-4">
                 <div>
-                    <h2 class="text-xl font-semibold text-white">Install InvoQuote</h2>
-                    <p class="mt-2 text-slate-400 text-sm">Choose the correct installer for your device.</p>
+                    <h2 class="text-xl font-semibold text-textPrimary">Install InvoQuote</h2>
+                    <p class="mt-2 text-textSecondary text-sm">Choose the correct installer for your device.</p>
                 </div>
-                <button onclick="App.hideInstallPopup()" class="text-slate-400 hover:text-white">✕</button>
+                <button onclick="App.hideInstallPopup()" class="text-textSecondary hover:text-textPrimary">✕</button>
             </div>
             <div class="mt-6 grid gap-4">
-                <div id="install-mobile-panel" class="rounded-2xl border border-slate-700 bg-slate-800 p-4">
-                    <p class="text-slate-200 font-medium">Mobile Install</p>
-                    <p class="text-slate-400 text-sm mt-1">Download the Android APK and install it on your phone.</p>
-                    <a id="install-apk-link" href="../android/app/build/outputs/apk/debug/app-debug.apk" download class="mt-4 inline-flex w-full justify-center rounded-xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white hover:bg-indigo-500">Download APK</a>
+                <div id="install-mobile-panel" class="rounded-2xl border border-borderDivider bg-card p-4">
+                    <p class="text-textPrimary font-medium">Mobile Install</p>
+                    <p class="text-textSecondary text-sm mt-1">Download the Android APK and install it on your phone.</p>
+                    <a id="install-apk-link" href="../android/app/build/outputs/apk/debug/app-debug.apk" download class="mt-4 inline-flex w-full justify-center rounded-xl bg-brand-red px-4 py-3 text-sm font-semibold text-white hover:bg-brand-redHover">Download APK</a>
                 </div>
-                <div id="install-desktop-panel" class="rounded-2xl border border-slate-700 bg-slate-800 p-4">
-                    <p class="text-slate-200 font-medium">Desktop Install</p>
-                    <p class="text-slate-400 text-sm mt-1">Download the desktop Electron installer for Windows.</p>
-                    <a id="install-desktop-link" href="../dist/Quotation System Setup 1.0.0.exe" class="mt-4 inline-flex w-full justify-center rounded-xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white hover:bg-indigo-500">Download Desktop App</a>
+                <div id="install-desktop-panel" class="rounded-2xl border border-borderDivider bg-card p-4">
+                    <p class="text-textPrimary font-medium">Desktop Install</p>
+                    <p class="text-textSecondary text-sm mt-1">Download the desktop Electron installer for Windows.</p>
+                    <a id="install-desktop-link" href="../dist/Quotation System Setup 1.0.0.exe" class="mt-4 inline-flex w-full justify-center rounded-xl bg-brand-red px-4 py-3 text-sm font-semibold text-white hover:bg-brand-redHover">Download Desktop App</a>
                 </div>
             </div>
             <div class="mt-6 text-right">
-                <button onclick="App.hideInstallPopup()" class="rounded-full border border-slate-700 bg-slate-800 px-4 py-2 text-sm text-slate-300 hover:bg-slate-700">Close</button>
+                <button onclick="App.hideInstallPopup()" class="rounded-full border border-borderDivider bg-card px-4 py-2 text-sm text-textPrimary hover:bg-bgMain">Close</button>
             </div>
         </div>
     </div>

@@ -5,6 +5,12 @@ const App = {
 
     init() {
         window.addEventListener('hashchange', () => this.route());
+        window.addEventListener('appinstalled', () => {
+            try {
+                localStorage.setItem('install_banner_closed', '1');
+            } catch (e) {}
+            try { this.hideInstallBanner(); } catch (e) {}
+        });
         this.route();
     },
 
@@ -72,54 +78,90 @@ const App = {
             default:
                 await this.renderLayout('<div class="p-8 text-center"><h1 class="text-2xl">404 - Page Not Found</h1></div>');
         }
+        // Update install banner visibility after routing
+        try { this.manageInstallBanner(); } catch (e) {}
     },
 
     async renderLayout(content) {
         this.container.innerHTML = `
             ${await Navbar.render()}
-            <div id="app-back-button" class="absolute top-4 left-4 z-50">
-                <button onclick="App.goBack()" class="inline-flex items-center gap-2 bg-white text-textPrimary hover:bg-bgMain border border-borderDivider px-3 py-2 rounded-lg shadow-sm transition-colors">
-                    <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 6L8 10l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    Back
-                </button>
-            </div>
+            <div id="app-back-button" class="absolute top-2 left-2 z-50">
+    <button
+        onclick="App.goBack()"
+        class="flex items-center justify-center
+               w-7 h-7
+               bg-brand-red text-white
+               hover:bg-black
+               border border-brand-red
+               rounded-md
+               transition-colors"
+    >
+        <svg class="w-3 h-3" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 6L8 10l4 4"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"/>
+        </svg>
+    </button>
+</div>
             <main class="flex-grow overflow-auto p-4 md:p-8 fade-in">
                 ${content}
             </main>
-            <footer class="bg-brand-dark border-t border-white/5 mt-auto">
-                <!-- Install App Banner -->
-                <div id="install-banner" class="bg-brand-red text-white py-3 px-4 shadow-lg">
-                    <div class="flex items-center justify-between max-w-7xl mx-auto">
-                        <div class="flex items-center space-x-3">
-                            <div class="flex-shrink-0">
-                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" clip-rule="evenodd"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-sm font-bold">Install InvoQuote App</p>
-                                <p class="text-xs opacity-90">Get the full experience with our mobile and desktop apps</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <button onclick="App.showInstallPopup()" class="bg-white text-brand-red px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-gray-100 transition-colors shadow-sm">
-                                Install Now
-                            </button>
-                            <button onclick="App.hideInstallBanner()" class="text-white opacity-70 hover:opacity-100 p-1">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
+    <footer class="static bg-black border-t border-brand-red/40">
+
+    <!-- Install App Banner (hidden by default; shown conditionally) -->
+    <div id="install-banner" class="hidden bg-brand-red text-white py-2 px-4 shadow-lg">
+        <div class="flex items-center justify-between max-w-7xl mx-auto">
+
+            <div class="flex items-center space-x-3">
+                <div class="flex-shrink-0">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" clip-rule="evenodd"></path>
+                    </svg>
                 </div>
-                <div class="max-w-7xl mx-auto px-4 py-8 flex flex-col items-center">
-                    <p class="text-xl font-black text-white tracking-tighter">InvoQuote</p>
-                    <p class="text-slate-400 text-sm font-medium">Smart Invoice & Document Management System</p>
-                    <div class="w-12 h-1 bg-brand-red rounded-full my-4"></div>
-                    <p class="text-slate-500 text-xs">&copy; 2026 | Developed by DeviQo Software Options</p>
+
+                <div>
+                    <p class="text-xs font-bold">Install InvoQuote App</p>
+                    <p class="text-[10px] opacity-80">Get full experience</p>
                 </div>
-            </footer>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button onclick="App.showInstallPopup()"
+                    class="bg-white text-brand-red px-2 py-1 rounded-md text-xs font-bold hover:bg-gray-100 transition-colors">
+                    Install
+                </button>
+
+                <button onclick="App.hideInstallBanner()"
+                    class="text-white opacity-70 hover:opacity-100">
+                    ✕
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer Content -->
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col items-center text-center">
+
+        <p class="text-lg font-bold text-white tracking-wide">
+            InvoQuote
+        </p>
+
+        <p class="text-gray-400 text-xs mt-1">
+            Smart Invoice & Document System
+        </p>
+
+        <div class="w-10 h-0.5 bg-brand-red rounded-full my-2"></div>
+
+        <p class="text-gray-500 text-[11px]">
+            © 2026 | DeviQo Software Options
+        </p>
+
+    </div>
+
+</footer>
         `;
     },
 
@@ -145,7 +187,7 @@ const App = {
         const toastMsg = document.getElementById('toast-message');
         
         toastMsg.textContent = message;
-        toastMsg.className = `bg-slate-800 border-l-4 shadow-lg rounded px-4 py-3 min-w-[300px] text-white ${type === 'error' ? 'border-red-500' : 'border-teal-500'}`;
+        toastMsg.className = `bg-card border-l-4 shadow-lg rounded px-4 py-3 min-w-[300px] text-textPrimary ${type === 'error' ? 'border-red-500' : 'border-brand-red'}`;
         
         toast.classList.remove('translate-x-full');
         
@@ -176,12 +218,49 @@ const App = {
         if (modal) {
             modal.classList.add('hidden');
         }
+        try {
+            localStorage.setItem('install_banner_closed', '1');
+        } catch (e) {}
     },
 
     hideInstallBanner() {
         const banner = document.getElementById('install-banner');
         if (banner) {
-            banner.style.display = 'none';
+            banner.classList.add('hidden');
+        }
+        try {
+            localStorage.setItem('install_banner_closed', '1');
+        } catch (e) {}
+    },
+
+    isAppInstalled() {
+        try {
+            if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) return true;
+            if (navigator.standalone) return true; // iOS
+            // Some browsers support getInstalledRelatedApps
+            if (navigator.getInstalledRelatedApps) return false; // can't synchronously determine here
+        } catch (e) {}
+        return false;
+    },
+
+    shouldShowInstallBanner() {
+        try {
+            if (localStorage.getItem('install_banner_closed') === '1') return false;
+        } catch (e) {}
+        if (this.isAppInstalled()) return false;
+        return true;
+    },
+
+    manageInstallBanner() {
+        // Show banner only on dashboard/root route and only once (until closed or installed)
+        const hash = window.location.hash || '#/';
+        const banner = document.getElementById('install-banner');
+        if (!banner) return;
+
+        if ((hash === '#/' || hash === '#/dashboard') && this.shouldShowInstallBanner()) {
+            banner.classList.remove('hidden');
+        } else {
+            banner.classList.add('hidden');
         }
     }
 };

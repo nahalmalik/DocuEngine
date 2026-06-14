@@ -6,10 +6,10 @@ return `
 
     <!-- Header (Hero Style) -->
     <div class="text-center space-y-4">
-        <h1 class="text-5xl font-bold text-white tracking-tight">
-            Contact <span class="text-indigo-400">Us</span>
+        <h1 class="text-5xl font-bold text-textPrimary tracking-tight">
+            Contact <span class="text-brand-red">Us</span>
         </h1>
-        <p class="text-slate-400 max-w-2xl mx-auto text-lg">
+        <p class="text-textSecondary max-w-2xl mx-auto text-lg">
             Let’s build something amazing together. Send a message or connect instantly through any platform below.
         </p>
     </div>
@@ -19,32 +19,33 @@ return `
         <!-- Contact Form (Bigger + Highlighted) -->
         <div class="lg:col-span-2 relative">
 
-            <!-- Glow background -->
-            <div class="absolute -inset-1 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 blur-2xl rounded-3xl"></div>
+            <!-- Subtle glow background -->
+            <div class="absolute -inset-1 bg-brand-red/5 blur-2xl rounded-3xl"></div>
 
-            <div class="relative bg-slate-900/80 backdrop-blur border border-slate-700 rounded-3xl p-8 shadow-2xl">
+            <div class="relative bg-card border border-borderDivider rounded-3xl p-8 shadow-2xl">
 
-                <h2 class="text-2xl font-semibold text-white mb-6">
+                <h2 class="text-2xl font-semibold text-textPrimary mb-6">
                     ✉️ Send a Message
                 </h2>
 
                 <form id="contact-form" class="space-y-5">
 
+
                     <input type="text" id="name" placeholder="Your Name"
-                        class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500">
+                        class="w-full bg-bgMain/50 border border-borderDivider rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-brand-red">
 
                     <input type="email" id="email" placeholder="Your Email"
-                        class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500">
+                        class="w-full bg-bgMain/50 border border-borderDivider rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-brand-red">
 
                     <textarea id="message" rows="6" placeholder="Write your message..."
-                        class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500"></textarea>
+                        class="w-full bg-bgMain/50 border border-borderDivider rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-brand-red"></textarea>
 
                     <button type="submit"
-                        class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 transition-all py-3 rounded-xl font-semibold text-white shadow-lg">
+                        class="w-full bg-brand-red hover:bg-brand-redHover transition-all py-3 rounded-xl font-semibold text-white shadow-lg">
                         Send Message 🚀
                     </button>
 
-                    <p id="contact-msg" class="text-sm text-slate-400 text-center"></p>
+                    <p id="contact-msg" class="text-sm text-textSecondary text-center"></p>
                 </form>
             </div>
         </div>
@@ -52,46 +53,46 @@ return `
         <!-- Contact Info Cards -->
         <div class="space-y-4">
 
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl p-5 hover:scale-[1.02] transition">
-                <p class="text-green-400 text-sm">WhatsApp</p>
-                <a href="https://wa.me/923315248626"
-                   target="_blank"
-                   class="text-white font-medium hover:text-green-400">
-                   +92 331 5248626
-                </a>
-            </div>
+          <div class="bg-card border border-borderDivider rounded-2xl p-5 hover:scale-[1.02] transition">
+                     <p class="text-sm text-textSecondary">WhatsApp</p>
+                     <a href="https://wa.me/923315248626"
+                         target="_blank"
+                         class="text-textPrimary font-medium hover:text-brand-red">
+                         +92 331 5248626
+                     </a>
+                </div>
 
-            <div class="bg-slate-900 border border-slate-700 rounded-2xl p-5 hover:scale-[1.02] transition">
-                <p class="text-indigo-400 text-sm">Facebook</p>
+            <div class="bg-card border border-borderDivider rounded-2xl p-5 hover:scale-[1.02] transition">
+                <p class="text-sm text-textSecondary">Facebook</p>
                 <a href="https://www.facebook.com/Ibziinnovations" target="_blank"
-                   class="text-white font-medium hover:text-indigo-400">
+                   class="text-textPrimary font-medium hover:text-brand-red">
                    Ibzi Innovations
                 </a>
             </div>
 
-            <div class="bg-slate-900 border border-slate-700 rounded-2xl p-5 hover:scale-[1.02] transition">
-                <p class="text-pink-400 text-sm">Instagram</p>
+            <div class="bg-card border border-borderDivider rounded-2xl p-5 hover:scale-[1.02] transition">
+                <p class="text-sm text-textSecondary">Instagram</p>
                 <a href="https://www.instagram.com/ibziinnovations?igsh=MW5lMTRzanFsbHViOQ%3D%3D"
                    target="_blank"
-                   class="text-white font-medium hover:text-pink-400">
+                   class="text-textPrimary font-medium hover:text-brand-red">
                    @ibziinnovations
                 </a>
             </div>
 
-            <div class="bg-slate-900 border border-slate-700 rounded-2xl p-5 hover:scale-[1.02] transition">
-                <p class="text-blue-400 text-sm">LinkedIn</p>
+            <div class="bg-card border border-borderDivider rounded-2xl p-5 hover:scale-[1.02] transition">
+                <p class="text-sm text-textSecondary">LinkedIn</p>
                 <a href="https://www.linkedin.com/company/ibzi-innovations/"
                    target="_blank"
-                   class="text-white font-medium hover:text-blue-400">
+                   class="text-textPrimary font-medium hover:text-brand-red">
                    Company Page
                 </a>
             </div>
 
 
-            <div class="bg-slate-900 border border-slate-700 rounded-2xl p-5 hover:scale-[1.02] transition">
-                <p class="text-yellow-400 text-sm">Email</p>
+            <div class="bg-card border border-borderDivider rounded-2xl p-5 hover:scale-[1.02] transition">
+                <p class="text-sm text-textSecondary">Email</p>
                 <a href="mailto:info@ibziinnovations.com"
-                   class="text-white font-medium hover:text-yellow-400">
+                   class="text-textPrimary font-medium hover:text-brand-red">
                    info@ibziinnovations.com
                 </a>
             </div>
@@ -125,8 +126,8 @@ return `
                 e.target.reset();
                 msg.innerHTML = `
 <div class="flex flex-col items-center justify-center space-y-2 animate-bounce">
-    <div class="text-green-400 text-4xl">✔</div>
-    <p class="text-green-400 font-semibold">Message Sent Successfully</p>
+    <div class="text-brand-red text-4xl">✔</div>
+        <p class="text-brand-red font-semibold">Message Sent Successfully</p>
 </div>
 `;
 

@@ -89,7 +89,7 @@ class BaseDocumentService {
             $params['stamp_text'] = $data['stamp_text'] ?? null;
         }
 
-        if ($this->hasColumn('po_number')) {
+        if ($this->hasColumn('po_number') && $numberField !== 'po_number') {
             $extraFields .= ', po_number';
             $extraValues .= ', :po_number';
             $params['po_number'] = $data['po_number'] ?? null;

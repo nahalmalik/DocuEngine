@@ -6,7 +6,7 @@ const Login = {
             <div class="min-h-screen flex items-center justify-center bg-bgMain py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
                 <!-- Background decorative elements -->
                 <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] opacity-10 bg-brand-red blur-[120px] rounded-full pointer-events-none"></div>
-                <div class="absolute bottom-0 right-0 w-[500px] h-[300px] opacity-10 bg-brand-dark blur-[100px] rounded-full pointer-events-none"></div>
+                <div class="absolute bottom-0 right-0 w-[500px] h-[300px] opacity-10 bg-brand-red/5 blur-[100px] rounded-full pointer-events-none"></div>
                 
                 <div class="max-w-md w-full bg-card border border-borderDivider p-10 rounded-3xl shadow-2xl fade-in relative z-10" id="auth-container">
                     
@@ -16,7 +16,7 @@ const Login = {
                             <div class="mx-auto h-16 w-16 text-brand-red flex items-center justify-center rounded-2xl bg-brand-red/5 border border-brand-red/10 shadow-inner">
                                 <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                             </div>
-                            <h2 class="mt-8 text-center text-4xl font-black text-brand-dark tracking-tighter">
+                            <h2 class="mt-8 text-center text-4xl font-black text-textPrimary tracking-tighter">
                                 InvoQuote
                             </h2>
                             <p class="mt-2 text-center text-sm font-semibold text-textSecondary uppercase tracking-widest">
@@ -49,10 +49,10 @@ const Login = {
                     <!-- Register View -->
                     <div id="register-view" class="hidden">
                         <div>
-                            <div class="mx-auto h-16 w-16 text-brand-dark flex items-center justify-center rounded-2xl bg-brand-dark/5 border border-brand-dark/10 shadow-inner">
+                            <div class="mx-auto h-16 w-16 text-textPrimary flex items-center justify-center rounded-2xl bg-bgMain/50 border border-borderDivider shadow-inner">
                                 <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
                             </div>
-                            <h2 class="mt-8 text-center text-4xl font-black text-brand-dark tracking-tighter">
+                            <h2 class="mt-8 text-center text-4xl font-black text-textPrimary tracking-tighter">
                                 Join Us
                             </h2>
                             <p class="mt-2 text-center text-sm font-semibold text-textSecondary uppercase tracking-widest">
@@ -62,29 +62,29 @@ const Login = {
                         <form id="registerForm" class="mt-10 space-y-5">
                             <div class="space-y-1">
                                 <label for="reg-name" class="block text-xs font-black text-textSecondary uppercase tracking-widest ml-1">Full Name</label>
-                                <input id="reg-name" name="name" type="text" required class="appearance-none block w-full px-4 py-3.5 border border-borderDivider bg-bgMain/50 text-textPrimary rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-dark focus:border-brand-dark sm:text-sm transition-all font-semibold" placeholder="Full Name">
+                                <input id="reg-name" name="name" type="text" required class="appearance-none block w-full px-4 py-3.5 border border-borderDivider bg-bgMain/50 text-textPrimary rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-brand-red sm:text-sm transition-all font-semibold" placeholder="Full Name">
                             </div>
                             <div class="space-y-1">
                                 <label for="reg-email" class="block text-xs font-black text-textSecondary uppercase tracking-widest ml-1">Email address</label>
-                                <input id="reg-email" name="email" type="email" required class="appearance-none block w-full px-4 py-3.5 border border-borderDivider bg-bgMain/50 text-textPrimary rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-dark focus:border-brand-dark sm:text-sm transition-all font-semibold" placeholder="Email Address">
+                                <input id="reg-email" name="email" type="email" required class="appearance-none block w-full px-4 py-3.5 border border-borderDivider bg-bgMain/50 text-textPrimary rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-brand-red sm:text-sm transition-all font-semibold" placeholder="Email Address">
                             </div>
                             <div class="space-y-1">
                                 <label for="reg-password" class="block text-xs font-black text-textSecondary uppercase tracking-widest ml-1">Password</label>
-                                <input id="reg-password" name="password" type="password" required minlength="6" class="appearance-none block w-full px-4 py-3.5 border border-borderDivider bg-bgMain/50 text-textPrimary rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-dark focus:border-brand-dark sm:text-sm transition-all font-semibold" placeholder="Min 6 characters">
+                                <input id="reg-password" name="password" type="password" required minlength="6" class="appearance-none block w-full px-4 py-3.5 border border-borderDivider bg-bgMain/50 text-textPrimary rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-brand-red sm:text-sm transition-all font-semibold" placeholder="Min 6 characters">
                             </div>
                             <div class="space-y-1">
                                 <label for="reg-confirm-password" class="block text-xs font-black text-textSecondary uppercase tracking-widest ml-1">Confirm Password</label>
-                                <input id="reg-confirm-password" name="confirm-password" type="password" required minlength="6" class="appearance-none block w-full px-4 py-3.5 border border-borderDivider bg-bgMain/50 text-textPrimary rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-dark focus:border-brand-dark sm:text-sm transition-all font-semibold" placeholder="Confirm Password">
+                                <input id="reg-confirm-password" name="confirm-password" type="password" required minlength="6" class="appearance-none block w-full px-4 py-3.5 border border-borderDivider bg-bgMain/50 text-textPrimary rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-brand-red sm:text-sm transition-all font-semibold" placeholder="Confirm Password">
                             </div>
 
                             <div class="pt-4">
-                                <button type="submit" class="w-full flex justify-center py-4 px-4 border border-transparent text-sm font-black uppercase tracking-widest rounded-2xl text-white bg-brand-dark hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-dark transition-all shadow-xl shadow-black/20 transform hover:-translate-y-1">
+                                <button type="submit" class="w-full flex justify-center py-4 px-4 border border-transparent text-sm font-black uppercase tracking-widest rounded-2xl text-white bg-brand-red hover:bg-brand-redHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-red transition-all shadow-xl shadow-brand-red/20 transform hover:-translate-y-1">
                                     Create My Account
                                 </button>
                             </div>
                         </form>
                         <div class="mt-8 text-center">
-                            <a href="#" id="show-login" class="text-sm text-textSecondary font-medium transition-colors">Member already? <span class="text-brand-dark font-black hover:underline">Sign in</span></a>
+                            <a href="#" id="show-login" class="text-sm text-textSecondary font-medium transition-colors">Member already? <span class="text-textPrimary font-black hover:underline">Sign in</span></a>
                         </div>
                     </div>
 

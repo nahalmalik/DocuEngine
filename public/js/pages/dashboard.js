@@ -8,9 +8,9 @@ const Dashboard = {
                     <h1 class="text-3xl font-black text-textPrimary tracking-tight">Modules Dashboard</h1>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
                     
-                    <a href="#/documents?type=quotation" class="bg-card p-8 rounded-2xl shadow-sm border border-borderDivider flex flex-col items-center justify-center space-y-4 hover:shadow-xl hover:border-brand-red/30 transition-all cursor-pointer group">
+                    <a href="#/documents?type=quotation" class="bg-card p-6 sm:p-8 rounded-2xl shadow-sm border border-borderDivider flex flex-col items-center justify-center space-y-4 hover:shadow-xl hover:border-brand-red/30 transition-all cursor-pointer group">
                         <div class="p-4 rounded-2xl bg-brand-red/5 text-brand-red group-hover:bg-brand-red group-hover:text-white group-hover:scale-110 transition-all duration-300">
                             <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                         </div>
