@@ -2,13 +2,13 @@
 // api/config/config.php
 
 define('APP_NAME', 'Document Engine');
-define('APP_ENV', 'development'); // 'development' or 'production'
+define('APP_ENV', 'production'); // 'development' or 'production'
 
 // Base URL Configuration
 if (APP_ENV === 'development') {
     define('BASE_URL', 'http://localhost/quotation-system');
 } else {
-    define('BASE_URL', 'http://localhost/quotation-system');
+    define('BASE_URL', 'https://bizhubpakistan.com');
 }
 
 // Database Configuration
